@@ -86,6 +86,9 @@
             + cityId + "&APPID=" + weatherKey + "&units=imperial";
             
         console.log(url);
+	$.getJSON(url, function(data) {
+            console.log(data);
+	});
     }
     
     function get5DayWeather(cityId, weatherKey) {
@@ -93,12 +96,12 @@
         var url = "http://api.openweathermap.org/data/2.5/forecast/city?id=" 
             + cityId + "&APPID=" + weatherKey + "&units=imperial";
             
-        console.log(url);
+        //console.log(url);
     }
 
     $(document).ready(function() {
         var cityId = "5074472"; // Omaha
-        var weatherKey = "";
+        var weatherKey = "862137d98135c77c0c189f43d5659c6f";
         
         console.log("test");
         
