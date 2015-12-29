@@ -75,6 +75,19 @@
         { id: 741, icon: "13.svg", description: "fog" }
     ];
     
+    function getWeatherIcon(weatherIcons, id) {
+        var icon = weatherIcons[0].icon;
+        
+        $.each(weatherIcons, function(key, value) {
+            if(value.id == id) {
+                icon = value.icon;
+                break;
+            }
+        })
+        
+        return icon;
+    }
+    
     function updateTime() {
         $("#clock").html(moment().format('dddd, MMMM D, YYYY'));
         $("#dateTime").html(moment().format('hh:mm:ss A'));
