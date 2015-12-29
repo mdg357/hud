@@ -12,7 +12,8 @@
             <h3 id="clock"></h3>
             <h1 id="dateTime"></h1>
 		</div>
-        <div id="weatherCurrent"></div>
+        <div id="weatherCurrent">
+        </div>
         <div id="weather5Day"></div>
 	</div>
 <script src="node_modules/jquery/dist/jquery.min.js"></script>
@@ -97,11 +98,18 @@
         // Open Weather Map API: http://openweathermap.org/current#one
         var url = "http://api.openweathermap.org/data/2.5/weather?id=" 
             + cityId + "&APPID=" + weatherKey + "&units=imperial";
-            
-        console.log(url);
-	$.getJSON(url, function(data) {
-            console.log(data);
-	});
+	var currentWeather; 
+ 
+	$.ajax({
+	    url: url,
+            async: false,
+            dataType: 'json',
+            success: function(data) {
+                currentWeather = data;
+            }
+        });
+
+        return currentWeather;
     }
     
     function get5DayWeather(cityId, weatherKey) {
@@ -109,19 +117,32 @@
         var url = "http://api.openweathermap.org/data/2.5/forecast/city?id=" 
             + cityId + "&APPID=" + weatherKey + "&units=imperial";
             
-        //console.log(url);
+	var fiveDayWeather; 
+ 
+	$.ajax({
+	    url: url,
+            async: false,
+            dataType: 'json',
+            success: function(data) {
+                fiveDayWeather = data;
+            }
+        });
+
+        return fiveDayWeather;
     }
 
     $(document).ready(function() {
-        var cityId = "5074472"; // Omaha
-        var weatherKey = "862137d98135c77c0c189f43d5659c6f";
-        
-        console.log("test");
-        
+        var cityId = "5074472"; // Omaha, NE
+        var weatherKey = "";
+
         updateTime();
         setInterval('updateTime()', 1000);
-        getCurrentWeather(cityId, weatherKey);
-        get5DayWeather(cityId, weatherKey);
+        var currentWeather = getCurrentWeather(cityId, weatherKey);
+        var fiveDayWeahter = get5DayWeather(cityId, weatherKey);
+
+	// TODO: set interval on current weather (1 hour)
+	// TODO: set interval on five day weather (12 hours)
+	// TODO: get icon based on current weather 
     });
 </script>
 </body>
