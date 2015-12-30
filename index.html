@@ -2,148 +2,271 @@
 <html>
 <head lang="en">
 	<meta charset="UTF-8">
-	<title>Angular-Chart-Sandbox</title>
+	<title>Mirror-Mirror</title>
 	<link href="node_modules/bootswatch/darkly/bootstrap.min.css" type="text/css" rel="stylesheet" />
 	<link href="assets/css/styles.css" type="text/css" rel="stylesheet" />
 </head>
 <body>
-	<div class="container">
-		<div class="page-header">
-            <h3 id="clock"></h3>
-            <h1 id="dateTime"></h1>
-		</div>
-        <div id="weatherCurrent">
+	<div class="container-fluid">
+		<div class="page-header"></div>
+        <div class="row">
+            <div class="col-sm-11 col-sm-offset-1" id="dateTime"></div>
         </div>
-        <div id="weather5Day"></div>
-	</div>
-<script src="node_modules/jquery/dist/jquery.min.js"></script>
-<script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
-<script src="node_modules/angular/angular.min.js"></script>
-<script src="node_modules/moment/min/moment.min.js"></script>
+        <div class="row">&nbsp;</div>
+        <div class="row">
+            <div class="col-sm-6 col-sm-offset-1">
+                <div class="col-sm-6" id="clock"></div>
+                <div class="col-sm-4" id="clockSeconds"></div>
+            </div>
+            <div id="currentWeather" class="col-sm-5">
+                <div class="col-sm-3">
+                    <img id="currentWeatherIcon" src="assets/images/2.svg" alt="default" class="largeImg" />
+                </div>
+                <div id="currentWeatherText" class="col-sm-9"><!-- Current Temperature --></div>
+            </div>
+        </div>
+        <div class="row">&nbsp;</div>
+        <!-- Five Day weather starts -->
+        <div class="row">
+            <div id="day1" class="col-sm-1 col-sm-offset-7 smallText">Wed</div>
+            <div id="icon1" class="col-sm-1">
+                <div class="imgHelper">
+                    <img src="assets/images/2.svg" class="smallImg"/>
+                </div>
+            </div>
+            <div id="max1" class="col-sm-1 smallText">72.7</div>
+            <div id="min1" class="col-sm-1 smallText">59.3</div>
+        </div>
+        <div class="row">&nbsp;</div>
+        <div class="row">
+            <div id="day2" class="col-sm-1 col-sm-offset-7 smallText">Wed</div>
+            <div id="icon2" class="col-sm-1">
+                <div class="imgHelper">
+                    <img src="assets/images/2.svg" class="smallImg"/>
+                </div>
+            </div>
+            <div id="max2" class="col-sm-1 smallText">72.7</div>
+            <div id="min2" class="col-sm-1 smallText">59.3</div>
+        </div>
+        <div class="row">&nbsp;</div>
+        <div class="row">
+            <div id="day3" class="col-sm-1 col-sm-offset-7 smallText">Wed</div>
+            <div id="icon3" class="col-sm-1">
+                <div class="imgHelper">
+                    <img src="assets/images/2.svg" class="smallImg"/>
+                </div>
+            </div>
+            <div id="max3" class="col-sm-1 smallText">72.7</div>
+            <div id="min3" class="col-sm-1 smallText">59.3</div>
+        </div>
+        <div class="row">&nbsp;</div>
+        <div class="row">
+            <div id="day4" class="col-sm-1 col-sm-offset-7 smallText">Wed</div>
+            <div id="icon4" class="col-sm-1">
+                <div class="imgHelper">
+                    <img src="assets/images/2.svg" class="smallImg"/>
+                </div>
+            </div>
+            <div id="max4" class="col-sm-1 smallText">72.7</div>
+            <div id="min4" class="col-sm-1 smallText">59.3</div>
+        </div>
+        <div class="row">&nbsp;</div>
+        <div class="row">
+            <div id="day5" class="col-sm-1 col-sm-offset-7 smallText">Wed</div>
+            <div id="icon5" class="col-sm-1">
+                <div class="imgHelper">
+                    <img src="assets/images/2.svg" class="smallImg"/>
+                </div>
+            </div>
+            <div id="max5" class="col-sm-1 smallText">72.7</div>
+            <div id="min5" class="col-sm-1 smallText">59.3</div>
+        </div>
+        <!-- Five Day weather ends -->
+    </div>
+    
+    <script src="node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="node_modules/angular/angular.min.js"></script>
+    <script src="node_modules/moment/min/moment.min.js"></script>
+    <script src="assets/js/script.js"></script>
 
-<script>
-    
-    var weatherIcons = [
-        { id: 0, icon: "2.svg", description: "default" },
-        { id: 1, icon: "1.svg", description: "sunrise" },
-        { id: 200, icon: "27.svg", description: "thunderstorm with light rain" },
-        { id: 201, icon: "27.svg", description: "thunderstorm with rain" },
-        { id: 202, icon: "27.svg", description: "thunderstorm with heavy rain" },
-        { id: 210, icon: "27.svg", description: "light thunderstorm" },
-        { id: 211, icon: "27.svg", description: "thunderstorm" },
-        { id: 212, icon: "27.svg", description: "heavy thunderstorm" },
-        { id: 221, icon: "27.svg", description: "ragged thunderstorm" },
-        { id: 230, icon: "27.svg", description: "thunderstorm with light drizzle" },
-        { id: 231, icon: "27.svg", description: "thunderstorm with drizzle" },
-        { id: 232, icon: "27.svg", description: "thunderstorm with heavy drizzle" },
-        { id: 300, icon: "17.svg", description: "light intensity drizzle" },
-        { id: 301, icon: "17.svg", description: "drizzle" },
-        { id: 302, icon: "17.svg", description: "heavy intensity drizzle" },
-        { id: 310, icon: "17.svg", description: "light intensity drizzle rain" },
-        { id: 311, icon: "17.svg", description: "drizzle rain" },
-        { id: 312, icon: "17.svg", description: "heavy intensity drizzle rain" },
-        { id: 313, icon: "17.svg", description: "shower rain and drizzle" },
-        { id: 314, icon: "18.svg", description: "heavy shower rain and drizzle" },
-        { id: 321, icon: "17.svg", description: "shower drizzle" },
-        { id: 500, icon: "17.svg", description: "light rain" },
-        { id: 501, icon: "17.svg", description: "moderate rain" },
-        { id: 502, icon: "18.svg", description: "heavy intensity rain" },
-        { id: 503, icon: "18.svg", description: "very heavy rain" },
-        { id: 504, icon: "18.svg", description: "extreme rain" },
-        { id: 511, icon: "18.svg", description: "freezing rain" },
-        { id: 520, icon: "17.svg", description: "light intensity shower rain" },
-        { id: 521, icon: "17.svg", description: "shower rain" },
-        { id: 522, icon: "18.svg", description: "heavy intensity shower rain" },
-        { id: 531, icon: "22.svg", description: "ragged shower rain" },
-        { id: 600, icon: "22.svg", description: "light snow" },
-        { id: 601, icon: "22.svg", description: "snow" },
-        { id: 602, icon: "23.svg", description: "heavy snow" },
-        { id: 611, icon: "22.svg", description: "sleet" },
-        { id: 612, icon: "22.svg", description: "shower sleet" },
-        { id: 615, icon: "22.svg", description: "light rain and snow" },
-        { id: 616, icon: "22.svg", description: "rain and snow" },
-        { id: 620, icon: "22.svg", description: "light shower snow" },
-        { id: 621, icon: "22.svg", description: "shower snow" },
-        { id: 622, icon: "23.svg", description: "heavy shower snow" },
-        { id: 800, icon: "2.svg", description: "clear sky" },
-        { id: 801, icon: "2.svg", description: "few clouds" },
-        { id: 802, icon: "25.svg", description: "scattered clouds" },
-        { id: 803, icon: "25.svg", description: "broken clouds" },
-        { id: 804, icon: "25.svg", description: "overcast clouds" },
-        { id: 905, icon: "6.svg", description: "windy" },
-        { id: 906, icon: "24.svg", description: "hail" },
-        { id: 951, icon: "2.svg", description: "calm" },
-        { id: 741, icon: "13.svg", description: "fog" }
-    ];
-    
-    function getWeatherIcon(weatherIcons, id) {
-        var icon = weatherIcons[0].icon;
+    <script>
         
-        $.each(weatherIcons, function(key, value) {
-            if(value.id == id) {
-                icon = value.icon;
-                break;
-            }
-        })
+        var weatherIconList = [
+            { id: 0, icon: "2.svg", description: "default-day" },
+            { id: 1, icon: "3.svg", description: "default-night" },
+            { id: 200, icon: "27.svg", description: "thunderstorm with light rain" },
+            { id: 201, icon: "27.svg", description: "thunderstorm with rain" },
+            { id: 202, icon: "27.svg", description: "thunderstorm with heavy rain" },
+            { id: 210, icon: "27.svg", description: "light thunderstorm" },
+            { id: 211, icon: "27.svg", description: "thunderstorm" },
+            { id: 212, icon: "27.svg", description: "heavy thunderstorm" },
+            { id: 221, icon: "27.svg", description: "ragged thunderstorm" },
+            { id: 230, icon: "27.svg", description: "thunderstorm with light drizzle" },
+            { id: 231, icon: "27.svg", description: "thunderstorm with drizzle" },
+            { id: 232, icon: "27.svg", description: "thunderstorm with heavy drizzle" },
+            { id: 300, icon: "17.svg", description: "light intensity drizzle" },
+            { id: 301, icon: "17.svg", description: "drizzle" },
+            { id: 302, icon: "17.svg", description: "heavy intensity drizzle" },
+            { id: 310, icon: "17.svg", description: "light intensity drizzle rain" },
+            { id: 311, icon: "17.svg", description: "drizzle rain" },
+            { id: 312, icon: "17.svg", description: "heavy intensity drizzle rain" },
+            { id: 313, icon: "17.svg", description: "shower rain and drizzle" },
+            { id: 314, icon: "18.svg", description: "heavy shower rain and drizzle" },
+            { id: 321, icon: "17.svg", description: "shower drizzle" },
+            { id: 500, icon: "17.svg", description: "light rain" },
+            { id: 501, icon: "17.svg", description: "moderate rain" },
+            { id: 502, icon: "18.svg", description: "heavy intensity rain" },
+            { id: 503, icon: "18.svg", description: "very heavy rain" },
+            { id: 504, icon: "18.svg", description: "extreme rain" },
+            { id: 511, icon: "18.svg", description: "freezing rain" },
+            { id: 520, icon: "17.svg", description: "light intensity shower rain" },
+            { id: 521, icon: "17.svg", description: "shower rain" },
+            { id: 522, icon: "18.svg", description: "heavy intensity shower rain" },
+            { id: 531, icon: "22.svg", description: "ragged shower rain" },
+            { id: 600, icon: "22.svg", description: "light snow" },
+            { id: 601, icon: "22.svg", description: "snow" },
+            { id: 602, icon: "23.svg", description: "heavy snow" },
+            { id: 611, icon: "22.svg", description: "sleet" },
+            { id: 612, icon: "22.svg", description: "shower sleet" },
+            { id: 615, icon: "22.svg", description: "light rain and snow" },
+            { id: 616, icon: "22.svg", description: "rain and snow" },
+            { id: 620, icon: "22.svg", description: "light shower snow" },
+            { id: 621, icon: "22.svg", description: "shower snow" },
+            { id: 622, icon: "23.svg", description: "heavy shower snow" },
+            { id: 800, icon: "2.svg", description: "clear sky" },
+            { id: 801, icon: "2.svg", description: "few clouds" },
+            { id: 802, icon: "25.svg", description: "scattered clouds" },
+            { id: 803, icon: "25.svg", description: "broken clouds" },
+            { id: 804, icon: "25.svg", description: "overcast clouds" },
+            { id: 905, icon: "6.svg", description: "windy" },
+            { id: 906, icon: "24.svg", description: "hail" },
+            { id: 951, icon: "2.svg", description: "calm" },
+            { id: 741, icon: "13.svg", description: "fog" }
+        ];
+        var sunriseTime = "1:48:58 PM"; // TODO: remove
+        var sunsetTime = "11:03:03 PM"; // TODO: remove
         
-        return icon;
-    }
-    
-    function updateTime() {
-        $("#clock").html(moment().format('dddd, MMMM D, YYYY'));
-        $("#dateTime").html(moment().format('hh:mm:ss A'));
-    }
-    
-    function getCurrentWeather(cityId, weatherKey) {
-        // Open Weather Map API: http://openweathermap.org/current#one
-        var url = "http://api.openweathermap.org/data/2.5/weather?id=" 
-            + cityId + "&APPID=" + weatherKey + "&units=imperial";
-	var currentWeather; 
- 
-	$.ajax({
-	    url: url,
-            async: false,
-            dataType: 'json',
-            success: function(data) {
-                currentWeather = data;
-            }
-        });
-
-        return currentWeather;
-    }
-    
-    function get5DayWeather(cityId, weatherKey) {
-        // Open Weather Map API: http://openweathermap.org/forecast5#5days
-        var url = "http://api.openweathermap.org/data/2.5/forecast/city?id=" 
-            + cityId + "&APPID=" + weatherKey + "&units=imperial";
+        // Get the weather icon based on the id and the time of day
+        function getWeatherIcon(weatherIcons, id) {
+            var DEFAULT = (isDayTime() ? 0 : 1); // Day = 0, Night = 1
+            var icon = weatherIcons[DEFAULT].icon;
+            var description = weatherIcons[DEFAULT].description;
             
-	var fiveDayWeather; 
- 
-	$.ajax({
-	    url: url,
-            async: false,
-            dataType: 'json',
-            success: function(data) {
-                fiveDayWeather = data;
+            $.each(weatherIcons, function(key, value) {
+                if(value.id == id) {
+                    icon = value.icon;
+                    description = value.description;
+                    return false;
+                }
+            })
+            
+            return icon;
+        }
+        
+        function interpretForecastData(forecastData) {
+            
+        }
+        
+        function updateTime() {
+            $("#dateTime").html(moment().format('dddd, MMMM D, YYYY'));
+            $("#clock").html(moment().format('hh:mm'));
+            $("#clockSeconds").html(moment().format('ss'));            
+        }
+        
+        // Returns true if it is current day (time is between sunrise and sunset).
+        // Also returns true if sunrise/sunset are unknown
+        function isDayTime() {
+            if(sunriseTime != undefined && sunsetTime != undefined) {
+                return (moment.utc() >= moment.utc(sunriseTime, "h:mm:ss A") 
+                    && moment.utc() < moment.utc(sunsetTime, "h:mm:ss A"));
+            }            
+            return true;
+        }
+        
+        function getSunriseSunsetTimes(latitude, longitude) {
+            var sunriseSunsetUrl = "http://api.sunrise-sunset.org/json?lat=" + latitude + "&lng=" + longitude + "&date=today";
+            var times;
+            console.log(sunriseSunsetUrl);
+            
+            /*$.ajax({
+                url: sunriseSunsetUrl,
+                async: false,
+                dataType: 'json',
+                success: function(data) {
+                    times = data;
+                }
+            });*/
+            
+            if(times != undefined && times.result != undefined) {
+                sunriseTime = times.result.sunrise;
+                sunsetTime = times.result.sunset;
             }
+        }
+        
+        function getCurrentWeather(cityId, weatherKey, weatherIconList) {
+            // Open Weather Map API: http://openweathermap.org/current#one
+            var url = "http://api.openweathermap.org/data/2.5/weather?id=" 
+                + cityId + "&APPID=" + weatherKey + "&units=imperial";
+            //console.log(weatherUrl);
+            var currentWeather = {"coord":{"lon":-95.94,"lat":41.26},"weather":[{"id":600,"main":"Snow","description":"light snow","icon":"13d"}],"base":"cmc stations","main":{"temp":25.39,"pressure":1020,"humidity":68,"temp_min":23.36,"temp_max":27},"wind":{"speed":6.7,"deg":20},"snow":{"1h":0.13},"clouds":{"all":90},"dt":1451424428,"sys":{"type":1,"id":1918,"message":0.0089,"country":"US","sunrise":1451396947,"sunset":1451430203},"id":5074472,"name":"Omaha","cod":200};
+            
+            /*$.ajax({
+                url: url,
+                async: false,
+                dataType: 'json',
+                success: function(data) {
+                    currentWeather = data;
+                }
+            });*/
+            
+            var weatherId = currentWeather.weather[0].id;
+            var latitude = currentWeather.coord.lat;
+            var longitude = currentWeather.coord.lon;
+            var temperature = Math.round(currentWeather.main.temp);
+            
+            if(sunsetTime == null || sunriseTime == null)
+                getSunriseSunsetTimes(latitude, longitude);
+            
+            var weatherIcon = getWeatherIcon(weatherIconList, weatherId);
+            
+            $("#currentWeatherText").html(temperature + ' &deg;');
+            $("#currentWeatherIcon").attr('src', 'assets/images/' + weatherIcon);
+        }
+        
+        function getforecastWeather(cityId, weatherKey) {
+            // Open Weather Map API: http://openweathermap.org/forecast5#5days
+            var url = "http://api.openweathermap.org/data/2.5/forecast/city?id=" 
+                + cityId + "&APPID=" + weatherKey + "&units=imperial";
+            console.log(url);
+            //var forecastWeather;
+            var forecastWeather = {"city":{"id":5074472,"name":"Omaha","coord":{"lon":-95.93779,"lat":41.25861},"country":"US","population":0,"sys":{"population":0}},"cod":"200","message":0.0133,"cnt":40,"list":[{"dt":1451433600,"main":{"temp":22.46,"temp_min":17.84,"temp_max":22.46,"pressure":993.15,"sea_level":1038.11,"grnd_level":993.15,"humidity":89,"temp_kf":2.56},"weather":[{"id":600,"main":"Snow","description":"light snow","icon":"13n"}],"clouds":{"all":80},"wind":{"speed":4.99,"deg":305.002},"snow":{"3h":0.086},"sys":{"pod":"n"},"dt_txt":"2015-12-30 00:00:00"},{"dt":1451444400,"main":{"temp":19.54,"temp_min":15.18,"temp_max":19.54,"pressure":993.63,"sea_level":1038.79,"grnd_level":993.63,"humidity":79,"temp_kf":2.43},"weather":[{"id":800,"main":"Clear","description":"sky is clear","icon":"01n"}],"clouds":{"all":80},"wind":{"speed":4.38,"deg":3.00162},"snow":{"3h":0.008},"sys":{"pod":"n"},"dt_txt":"2015-12-30 03:00:00"},{"dt":1451455200,"main":{"temp":18.28,"temp_min":14.17,"temp_max":18.28,"pressure":993.59,"sea_level":1038.97,"grnd_level":993.59,"humidity":72,"temp_kf":2.29},"weather":[{"id":800,"main":"Clear","description":"sky is clear","icon":"01n"}],"clouds":{"all":88},"wind":{"speed":3.05,"deg":29.5043},"snow":{"3h":0.0025},"sys":{"pod":"n"},"dt_txt":"2015-12-30 06:00:00"},{"dt":1451466000,"main":{"temp":19.87,"temp_min":15.98,"temp_max":19.87,"pressure":994.25,"sea_level":1039.79,"grnd_level":994.25,"humidity":77,"temp_kf":2.16},"weather":[{"id":600,"main":"Snow","description":"light snow","icon":"13n"}],"clouds":{"all":92},"wind":{"speed":3.05,"deg":258.002},"snow":{"3h":0.15},"sys":{"pod":"n"},"dt_txt":"2015-12-30 09:00:00"},{"dt":1451476800,"main":{"temp":20.71,"temp_min":17.07,"temp_max":20.71,"pressure":994.49,"sea_level":1040.01,"grnd_level":994.49,"humidity":88,"temp_kf":2.02},"weather":[{"id":600,"main":"Snow","description":"light snow","icon":"13n"}],"clouds":{"all":92},"wind":{"speed":3.82,"deg":300},"snow":{"3h":0.435},"sys":{"pod":"n"},"dt_txt":"2015-12-30 12:00:00"},{"dt":1451487600,"main":{"temp":20.34,"temp_min":16.94,"temp_max":20.34,"pressure":995.05,"sea_level":1040.52,"grnd_level":995.05,"humidity":83,"temp_kf":1.89},"weather":[{"id":600,"main":"Snow","description":"light snow","icon":"13d"}],"clouds":{"all":76},"wind":{"speed":4.21,"deg":315},"snow":{"3h":0.035},"sys":{"pod":"d"},"dt_txt":"2015-12-30 15:00:00"},{"dt":1451498400,"main":{"temp":22.46,"temp_min":19.31,"temp_max":22.46,"pressure":995.54,"sea_level":1040.39,"grnd_level":995.54,"humidity":97,"temp_kf":1.75},"weather":[{"id":800,"main":"Clear","description":"sky is clear","icon":"01d"}],"clouds":{"all":56},"wind":{"speed":5.96,"deg":317.506},"snow":{"3h":0.005},"sys":{"pod":"d"},"dt_txt":"2015-12-30 18:00:00"},{"dt":1451509200,"main":{"temp":22.42,"temp_min":19.52,"temp_max":22.42,"pressure":995.05,"sea_level":1039.61,"grnd_level":995.05,"humidity":96,"temp_kf":1.62},"weather":[{"id":600,"main":"Snow","description":"light snow","icon":"13d"}],"clouds":{"all":76},"wind":{"speed":6.5,"deg":307.006},"snow":{"3h":0.045},"sys":{"pod":"d"},"dt_txt":"2015-12-30 21:00:00"},{"dt":1451520000,"main":{"temp":18.86,"temp_min":16.2,"temp_max":18.86,"pressure":996.07,"sea_level":1041.26,"grnd_level":996.07,"humidity":86,"temp_kf":1.48},"weather":[{"id":600,"main":"Snow","description":"light snow","icon":"13n"}],"clouds":{"all":80},"wind":{"speed":6.18,"deg":297.003},"snow":{"3h":0.11},"sys":{"pod":"n"},"dt_txt":"2015-12-31 00:00:00"},{"dt":1451530800,"main":{"temp":17.56,"temp_min":15.13,"temp_max":17.56,"pressure":996.91,"sea_level":1042.49,"grnd_level":996.91,"humidity":90,"temp_kf":1.35},"weather":[{"id":600,"main":"Snow","description":"light snow","icon":"13n"}],"clouds":{"all":80},"wind":{"speed":6.07,"deg":302.001},"snow":{"3h":0.0575},"sys":{"pod":"n"},"dt_txt":"2015-12-31 03:00:00"},{"dt":1451541600,"main":{"temp":16.84,"temp_min":14.66,"temp_max":16.84,"pressure":997.51,"sea_level":1043.34,"grnd_level":997.51,"humidity":87,"temp_kf":1.21},"weather":[{"id":803,"main":"Clouds","description":"broken clouds","icon":"04n"}],"clouds":{"all":64},"wind":{"speed":7.47,"deg":295.502},"snow":{},"sys":{"pod":"n"},"dt_txt":"2015-12-31 06:00:00"},{"dt":1451552400,"main":{"temp":6.58,"temp_min":4.65,"temp_max":6.58,"pressure":997.8,"sea_level":1043.81,"grnd_level":997.8,"humidity":77,"temp_kf":1.08},"weather":[{"id":800,"main":"Clear","description":"sky is clear","icon":"01n"}],"clouds":{"all":0},"wind":{"speed":6.74,"deg":281.001},"snow":{},"sys":{"pod":"n"},"dt_txt":"2015-12-31 09:00:00"},{"dt":1451563200,"main":{"temp":-1.05,"temp_min":-2.75,"temp_max":-1.05,"pressure":998.15,"sea_level":1044.4,"grnd_level":998.15,"humidity":72,"temp_kf":0.94},"weather":[{"id":800,"main":"Clear","description":"sky is clear","icon":"01n"}],"clouds":{"all":0},"wind":{"speed":3.69,"deg":266.5},"snow":{},"sys":{"pod":"n"},"dt_txt":"2015-12-31 12:00:00"},{"dt":1451574000,"main":{"temp":-1.9,"temp_min":-3.36,"temp_max":-1.9,"pressure":999.42,"sea_level":1045.6,"grnd_level":999.42,"humidity":50,"temp_kf":0.81},"weather":[{"id":800,"main":"Clear","description":"sky is clear","icon":"01d"}],"clouds":{"all":0},"wind":{"speed":4.9,"deg":252.501},"snow":{},"sys":{"pod":"d"},"dt_txt":"2015-12-31 15:00:00"},{"dt":1451584800,"main":{"temp":14.92,"temp_min":13.71,"temp_max":14.92,"pressure":999.76,"sea_level":1045.08,"grnd_level":999.76,"humidity":85,"temp_kf":0.67},"weather":[{"id":800,"main":"Clear","description":"sky is clear","icon":"01d"}],"clouds":{"all":0},"wind":{"speed":5.9,"deg":262.001},"snow":{},"sys":{"pod":"d"},"dt_txt":"2015-12-31 18:00:00"},{"dt":1451595600,"main":{"temp":16.74,"temp_min":15.77,"temp_max":16.74,"pressure":999.21,"sea_level":1044.33,"grnd_level":999.21,"humidity":88,"temp_kf":0.54},"weather":[{"id":800,"main":"Clear","description":"sky is clear","icon":"01d"}],"clouds":{"all":0},"wind":{"speed":7.71,"deg":284.002},"snow":{},"sys":{"pod":"d"},"dt_txt":"2015-12-31 21:00:00"},{"dt":1451606400,"main":{"temp":11.41,"temp_min":10.68,"temp_max":11.41,"pressure":1000.36,"sea_level":1046.03,"grnd_level":1000.36,"humidity":78,"temp_kf":0.4},"weather":[{"id":800,"main":"Clear","description":"sky is clear","icon":"01n"}],"clouds":{"all":0},"wind":{"speed":8.88,"deg":289.501},"snow":{},"sys":{"pod":"n"},"dt_txt":"2016-01-01 00:00:00"},{"dt":1451617200,"main":{"temp":7.61,"temp_min":7.13,"temp_max":7.61,"pressure":1001.62,"sea_level":1047.6,"grnd_level":1001.62,"humidity":69,"temp_kf":0.27},"weather":[{"id":800,"main":"Clear","description":"sky is clear","icon":"01n"}],"clouds":{"all":12},"wind":{"speed":8.01,"deg":291.503},"snow":{"3h":0.005},"sys":{"pod":"n"},"dt_txt":"2016-01-01 03:00:00"},{"dt":1451628000,"main":{"temp":9.82,"temp_min":9.57,"temp_max":9.82,"pressure":1002.65,"sea_level":1048.82,"grnd_level":1002.65,"humidity":68,"temp_kf":0.13},"weather":[{"id":800,"main":"Clear","description":"sky is clear","icon":"01n"}],"clouds":{"all":12},"wind":{"speed":9.31,"deg":297.502},"snow":{"3h":0.025},"sys":{"pod":"n"},"dt_txt":"2016-01-01 06:00:00"},{"dt":1451638800,"main":{"temp":7.17,"temp_min":7.17,"temp_max":7.17,"pressure":1003.17,"sea_level":1049.4,"grnd_level":1003.17,"humidity":69,"temp_kf":0},"weather":[{"id":600,"main":"Snow","description":"light snow","icon":"13n"}],"clouds":{"all":8},"wind":{"speed":8.34,"deg":290.504},"snow":{"3h":0.03},"sys":{"pod":"n"},"dt_txt":"2016-01-01 09:00:00"},{"dt":1451649600,"main":{"temp":5.36,"temp_min":5.36,"temp_max":5.36,"pressure":1002.82,"sea_level":1049.08,"grnd_level":1002.82,"humidity":63,"temp_kf":0},"weather":[{"id":800,"main":"Clear","description":"sky is clear","icon":"01n"}],"clouds":{"all":12},"wind":{"speed":8.16,"deg":277.001},"snow":{"3h":0.015},"sys":{"pod":"n"},"dt_txt":"2016-01-01 12:00:00"},{"dt":1451660400,"main":{"temp":6.39,"temp_min":6.39,"temp_max":6.39,"pressure":1003.64,"sea_level":1049.81,"grnd_level":1003.64,"humidity":71,"temp_kf":0},"weather":[{"id":800,"main":"Clear","description":"sky is clear","icon":"01d"}],"clouds":{"all":0},"wind":{"speed":6.87,"deg":256.5},"snow":{},"sys":{"pod":"d"},"dt_txt":"2016-01-01 15:00:00"},{"dt":1451671200,"main":{"temp":16.39,"temp_min":16.39,"temp_max":16.39,"pressure":1003.29,"sea_level":1048.56,"grnd_level":1003.29,"humidity":86,"temp_kf":0},"weather":[{"id":800,"main":"Clear","description":"sky is clear","icon":"01d"}],"clouds":{"all":0},"wind":{"speed":8.45,"deg":256.005},"snow":{},"sys":{"pod":"d"},"dt_txt":"2016-01-01 18:00:00"},{"dt":1451682000,"main":{"temp":19.66,"temp_min":19.66,"temp_max":19.66,"pressure":1001.32,"sea_level":1046.06,"grnd_level":1001.32,"humidity":88,"temp_kf":0},"weather":[{"id":800,"main":"Clear","description":"sky is clear","icon":"01d"}],"clouds":{"all":0},"wind":{"speed":8.14,"deg":247.503},"snow":{},"sys":{"pod":"d"},"dt_txt":"2016-01-01 21:00:00"},{"dt":1451692800,"main":{"temp":14.84,"temp_min":14.84,"temp_max":14.84,"pressure":1000.24,"sea_level":1045.51,"grnd_level":1000.24,"humidity":76,"temp_kf":0},"weather":[{"id":800,"main":"Clear","description":"sky is clear","icon":"01n"}],"clouds":{"all":0},"wind":{"speed":9.42,"deg":243.003},"snow":{},"sys":{"pod":"n"},"dt_txt":"2016-01-02 00:00:00"},{"dt":1451703600,"main":{"temp":14.25,"temp_min":14.25,"temp_max":14.25,"pressure":999.29,"sea_level":1044.82,"grnd_level":999.29,"humidity":77,"temp_kf":0},"weather":[{"id":800,"main":"Clear","description":"sky is clear","icon":"01n"}],"clouds":{"all":0},"wind":{"speed":10.22,"deg":246.506},"snow":{},"sys":{"pod":"n"},"dt_txt":"2016-01-02 03:00:00"},{"dt":1451714400,"main":{"temp":14.24,"temp_min":14.24,"temp_max":14.24,"pressure":997.99,"sea_level":1043.68,"grnd_level":997.99,"humidity":77,"temp_kf":0},"weather":[{"id":800,"main":"Clear","description":"sky is clear","icon":"01n"}],"clouds":{"all":0},"wind":{"speed":9.72,"deg":250.001},"snow":{},"sys":{"pod":"n"},"dt_txt":"2016-01-02 06:00:00"},{"dt":1451725200,"main":{"temp":13.45,"temp_min":13.45,"temp_max":13.45,"pressure":997.05,"sea_level":1042.78,"grnd_level":997.05,"humidity":74,"temp_kf":0},"weather":[{"id":800,"main":"Clear","description":"sky is clear","icon":"01n"}],"clouds":{"all":0},"wind":{"speed":9.33,"deg":257},"snow":{},"sys":{"pod":"n"},"dt_txt":"2016-01-02 09:00:00"},{"dt":1451736000,"main":{"temp":10.46,"temp_min":10.46,"temp_max":10.46,"pressure":996.28,"sea_level":1042.18,"grnd_level":996.28,"humidity":72,"temp_kf":0},"weather":[{"id":800,"main":"Clear","description":"sky is clear","icon":"01n"}],"clouds":{"all":0},"wind":{"speed":7.82,"deg":268.001},"snow":{},"sys":{"pod":"n"},"dt_txt":"2016-01-02 12:00:00"},{"dt":1451746800,"main":{"temp":3.82,"temp_min":3.82,"temp_max":3.82,"pressure":996.2,"sea_level":1042.07,"grnd_level":996.2,"humidity":62,"temp_kf":0},"weather":[{"id":800,"main":"Clear","description":"sky is clear","icon":"01d"}],"clouds":{"all":0},"wind":{"speed":3.07,"deg":253.006},"snow":{},"sys":{"pod":"d"},"dt_txt":"2016-01-02 15:00:00"},{"dt":1451757600,"main":{"temp":20.02,"temp_min":20.02,"temp_max":20.02,"pressure":996.55,"sea_level":1041.19,"grnd_level":996.55,"humidity":86,"temp_kf":0},"weather":[{"id":800,"main":"Clear","description":"sky is clear","icon":"01d"}],"clouds":{"all":0},"wind":{"speed":4.47,"deg":269.002},"snow":{},"sys":{"pod":"d"},"dt_txt":"2016-01-02 18:00:00"},{"dt":1451768400,"main":{"temp":21.18,"temp_min":21.18,"temp_max":21.18,"pressure":994.79,"sea_level":1039.17,"grnd_level":994.79,"humidity":90,"temp_kf":0},"weather":[{"id":800,"main":"Clear","description":"sky is clear","icon":"01d"}],"clouds":{"all":0},"wind":{"speed":5.18,"deg":288.502},"snow":{},"sys":{"pod":"d"},"dt_txt":"2016-01-02 21:00:00"},{"dt":1451779200,"main":{"temp":7.92,"temp_min":7.92,"temp_max":7.92,"pressure":994.8,"sea_level":1040.01,"grnd_level":994.8,"humidity":66,"temp_kf":0},"weather":[{"id":800,"main":"Clear","description":"sky is clear","icon":"01n"}],"clouds":{"all":0},"wind":{"speed":5.44,"deg":287.005},"snow":{},"sys":{"pod":"n"},"dt_txt":"2016-01-03 00:00:00"},{"dt":1451790000,"main":{"temp":-1.77,"temp_min":-1.77,"temp_max":-1.77,"pressure":995.65,"sea_level":1041.52,"grnd_level":995.65,"humidity":46,"temp_kf":0},"weather":[{"id":800,"main":"Clear","description":"sky is clear","icon":"01n"}],"clouds":{"all":0},"wind":{"speed":3.61,"deg":302.5},"snow":{},"sys":{"pod":"n"},"dt_txt":"2016-01-03 03:00:00"},{"dt":1451800800,"main":{"temp":-3.19,"temp_min":-3.19,"temp_max":-3.19,"pressure":995.64,"sea_level":1041.79,"grnd_level":995.64,"humidity":49,"temp_kf":0},"weather":[{"id":800,"main":"Clear","description":"sky is clear","icon":"02n"}],"clouds":{"all":8},"wind":{"speed":6.72,"deg":300.502},"snow":{},"sys":{"pod":"n"},"dt_txt":"2016-01-03 06:00:00"},{"dt":1451811600,"main":{"temp":-1.6,"temp_min":-1.6,"temp_max":-1.6,"pressure":995.57,"sea_level":1041.86,"grnd_level":995.57,"humidity":68,"temp_kf":0},"weather":[{"id":800,"main":"Clear","description":"sky is clear","icon":"01n"}],"clouds":{"all":0},"wind":{"speed":4.56,"deg":317.502},"snow":{},"sys":{"pod":"n"},"dt_txt":"2016-01-03 09:00:00"},{"dt":1451822400,"main":{"temp":-7.43,"temp_min":-7.43,"temp_max":-7.43,"pressure":996.41,"sea_level":1042.84,"grnd_level":996.41,"humidity":60,"temp_kf":0},"weather":[{"id":800,"main":"Clear","description":"sky is clear","icon":"02n"}],"clouds":{"all":8},"wind":{"speed":4.45,"deg":314.003},"snow":{},"sys":{"pod":"n"},"dt_txt":"2016-01-03 12:00:00"},{"dt":1451833200,"main":{"temp":-6.52,"temp_min":-6.52,"temp_max":-6.52,"pressure":997.59,"sea_level":1043.95,"grnd_level":997.59,"humidity":58,"temp_kf":0},"weather":[{"id":800,"main":"Clear","description":"sky is clear","icon":"01d"}],"clouds":{"all":0},"wind":{"speed":3.48,"deg":315.002},"snow":{},"sys":{"pod":"d"},"dt_txt":"2016-01-03 15:00:00"},{"dt":1451844000,"main":{"temp":9.27,"temp_min":9.27,"temp_max":9.27,"pressure":998.19,"sea_level":1043.19,"grnd_level":998.19,"humidity":83,"temp_kf":0},"weather":[{"id":800,"main":"Clear","description":"sky is clear","icon":"01d"}],"clouds":{"all":0},"wind":{"speed":4.45,"deg":330.5},"snow":{},"sys":{"pod":"d"},"dt_txt":"2016-01-03 18:00:00"},{"dt":1451854800,"main":{"temp":13.08,"temp_min":13.08,"temp_max":13.08,"pressure":997.53,"sea_level":1042.24,"grnd_level":997.53,"humidity":87,"temp_kf":0},"weather":[{"id":800,"main":"Clear","description":"sky is clear","icon":"01d"}],"clouds":{"all":0},"wind":{"speed":3.67,"deg":333.008},"snow":{},"sys":{"pod":"d"},"dt_txt":"2016-01-03 21:00:00"}]};
+    
+            /*$.ajax({
+                url: url,
+                async: false,
+                dataType: 'json',
+                success: function(data) {
+                    forecastWeather = data;
+                }
+            });*/
+            
+            var forecasts = interpretForecastData(forecastWeather.list);
+        }
+
+        $(document).ready(function() {
+            var cityId = "5074472"; // Omaha, NE
+            var weatherKey = "";
+
+            updateTime();
+            setInterval('updateTime()', 1000);
+            getCurrentWeather(cityId, weatherKey, weatherIconList);
+            getforecastWeather(cityId, weatherKey);            
+
+            // TODO: set interval on current weather (1 hour)
+            // TODO: set interval on five day weather (12 hours)
         });
-
-        return fiveDayWeather;
-    }
-
-    $(document).ready(function() {
-        var cityId = "5074472"; // Omaha, NE
-        var weatherKey = "";
-
-        updateTime();
-        setInterval('updateTime()', 1000);
-        var currentWeather = getCurrentWeather(cityId, weatherKey);
-        var fiveDayWeahter = get5DayWeather(cityId, weatherKey);
-
-	// TODO: set interval on current weather (1 hour)
-	// TODO: set interval on five day weather (12 hours)
-	// TODO: get icon based on current weather 
-    });
-</script>
+        
+         </script>
 </body>
 </html>

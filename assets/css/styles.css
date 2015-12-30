@@ -1,3 +1,40 @@
 html body {
     background-color: black;
 }
+
+h1 {
+    font-size: 90px;
+}
+
+img {
+    vertical-align: middle;
+}
+
+.imgHelper {
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+    align-content: center;
+}
+
+#windText, .smallText, #dateTime, #clockSeconds {
+    font-size: 36px;
+}
+
+#currentWeatherText, #clock {
+    font-size: 90px;
+}
+
+.smallImg {
+    height: 50px;
+    margin-left: 10px;
+}
+
+.largeImg {
+    height: 90px;
+}
+
+#clockSeconds {
+    margin-top: 20px;
+    margin-left: 10px;
+}
