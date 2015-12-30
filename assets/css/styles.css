@@ -18,7 +18,7 @@ img {
 }
 
 #windText, .smallText, #dateTime, #clockSeconds {
-    font-size: 36px;
+    font-size: 40px;
 }
 
 #currentWeatherText, #clock {
