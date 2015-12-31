@@ -14,15 +14,15 @@
         </div>
         <div class="row">&nbsp;</div>
         <div class="row">
-            <div class="col-sm-6 col-sm-offset-1">
-                <div class="col-sm-6" id="clock"></div>
-                <div class="col-sm-4" id="clockSeconds"></div>
+            <div class="col-sm-7">
+                <div class="col-sm-5 col-sm-offset-1" id="clock"></div>
+                <div class="col-sm-3" id="clockSeconds"></div>
             </div>
             <div id="currentWeather" class="col-sm-5">
-                <div class="col-sm-3">
+                <div class="col-sm-4">
                     <img id="currentWeatherIcon" src="assets/images/2.svg" alt="default" class="largeImg" />
                 </div>
-                <div id="currentWeatherText" class="col-sm-9"><!-- Current Temperature --></div>
+                <div id="currentWeatherText" class="col-sm-8"><!-- Current Temperature --></div>
             </div>
         </div>
         <div class="row">&nbsp;</div>
@@ -191,14 +191,15 @@
             var sunriseSunsetUrl = "http://api.sunrise-sunset.org/json?lat=" + latitude + "&lng=" + longitude + "&date=today";
             var times;
             
-            /*$.ajax({
+            $.ajax({
                 url: sunriseSunsetUrl,
                 async: false,
                 dataType: 'json',
+                timeout: 5000,
                 success: function(data) {
                     times = data;
                 }
-            });*/
+            });
             
             if(times != undefined && times.result != undefined) {
                 sunriseTime = times.result.sunrise;
@@ -207,10 +208,15 @@
         }
         
         function getCurrentWeather() {
+            if(WEATHER_API_KEY == "") {
+                console.log("Weather API Key not set, exiting...");
+                return false;
+            }
+            
             // Open Weather Map API: http://openweathermap.org/current#one
             var url = "http://api.openweathermap.org/data/2.5/weather?id=" 
                 + CITY_ID + "&APPID=" + WEATHER_API_KEY + "&units=imperial";
-            var currentWeather;
+            var currentWeather = undefined;
             
             $.ajax({
                 url: url,
@@ -221,21 +227,28 @@
                 }
             });
             
-            var weatherId = currentWeather.weather[0].id;
-            var latitude = currentWeather.coord.lat;
-            var longitude = currentWeather.coord.lon;
-            var temperature = Math.round(currentWeather.main.temp);
+            if(currentWeather != undefined) {
+                var weatherId = currentWeather.weather[0].id;
+                var latitude = currentWeather.coord.lat;
+                var longitude = currentWeather.coord.lon;
+                var temperature = Math.round(currentWeather.main.temp);
             
-            if(SUNRISE_TIME == null || SUNSET_TIME == null)
-                getSunriseSunsetTimes(latitude, longitude);
+                if(SUNRISE_TIME == null || SUNSET_TIME == null)
+                    getSunriseSunsetTimes(latitude, longitude);
             
-            var weatherIcon = getWeatherIcon(weatherId);
+                var weatherIcon = getWeatherIcon(weatherId);
             
-            $("#currentWeatherText").html(temperature + ' &deg;');
-            $("#currentWeatherIcon").attr('src', IMAGE_PATH + weatherIcon);
+                $("#currentWeatherText").html(temperature + ' &deg;');
+                $("#currentWeatherIcon").attr('src', IMAGE_PATH + weatherIcon);
+            }
         }
         
         function getforecastWeather() {
+            if(WEATHER_API_KEY == "") {
+                console.log("Weather API Key not set, exiting...");
+                return false;
+            }
+            
             // Open Weather Map API: http://openweathermap.org/forecast5#5days
             var url = "http://api.openweathermap.org/data/2.5/forecast/city?id=" 
                 + CITY_ID + "&APPID=" + WEATHER_API_KEY + "&units=imperial";
