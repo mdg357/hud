@@ -15,7 +15,7 @@
         <div class="row">&nbsp;</div>
         <div class="row">
             <div class="col-sm-7">
-                <div class="col-sm-5 col-sm-offset-1" id="clock"></div>
+                <div class="col-sm-3 col-sm-offset-1" id="clock"></div>
                 <div class="col-sm-3" id="clockSeconds"></div>
             </div>
             <div id="currentWeather" class="col-sm-5">
@@ -153,6 +153,9 @@
         var CITY_ID = "5074472"; // Omaha, NE
         var WEATHER_API_KEY = "";
         var IMAGE_PATH = "assets/images/";
+        
+        // Set timezone offset
+        moment().utcOffset("-06:00");
         
         // Get the weather icon based on the id and the time of day
         function getWeatherIcon(id) {
