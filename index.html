@@ -27,6 +27,7 @@
         </div>
         <div class="row">&nbsp;</div>
         <!-- Five Day weather starts -->
+        <!-- TODO: replace with an Angular component -->
         <div class="row">
             <div id="day0" class="col-sm-1 col-sm-offset-7 smallText"></div>
             <div id="icon0" class="col-sm-1">
@@ -152,10 +153,33 @@
         var WEATHER_COUNT_INDEX = 1;        
         var CITY_ID = "5074472"; // Omaha, NE
         var WEATHER_API_KEY = "";
+        var HABITICA_USER_KEY = "";
+        var HABITICA_API_KEY = "";
         var IMAGE_PATH = "assets/images/";
         
         // Set timezone offset
-        moment().utcOffset("-06:00");
+        moment().utcOffset("-06:00"); // GMT -06:00
+        
+        // TODO: redo using Angular promises
+        function getHabiticaTasks() {
+            var tasks;
+            
+            $.ajax({
+                async: false,
+                url: 'https://habitica.com/api/v2/user/tasks',
+                type: 'GET',
+                beforeSend: function(xhr) {
+                    xhr.setRequestHeader('x-api-user', HABITICA_USER_KEY);
+                    xhr.setRequestHeader('x-api-key', HABITICA_API_KEY);
+                },
+                success: function(data) {
+                    tasks = data;
+                }
+            });
+            
+            // TODO: parse the returned items looking for the todos
+            console.log(tasks);
+        }
         
         // Get the weather icon based on the id and the time of day
         function getWeatherIcon(id) {
@@ -190,6 +214,7 @@
             return true;
         }
         
+        // TODO: redo using Angular promises
         function getSunriseSunsetTimes(latitude, longitude) {
             var sunriseSunsetUrl = "http://api.sunrise-sunset.org/json?lat=" + latitude + "&lng=" + longitude + "&date=today";
             var times;
@@ -210,6 +235,7 @@
             }
         }
         
+        // TODO: redo using Angular promises
         function getCurrentWeather() {
             if(WEATHER_API_KEY == "") {
                 console.log("Weather API Key not set, exiting...");
@@ -246,6 +272,7 @@
             }
         }
         
+        // TODO: redo using Angular promises
         function getforecastWeather() {
             if(WEATHER_API_KEY == "") {
                 console.log("Weather API Key not set, exiting...");
@@ -399,6 +426,8 @@
             setInterval('updateTime()', 1000); // 1 second
             setInterval('getCurrentWeather()', 1000 * 60 * 30); // 30 minutes
             setInterval('getforecastWeather()', 1000 * 60 * 60 * 12); // 12 hours
+            
+            //getHabiticaTasks();
         });
         
          </script>
