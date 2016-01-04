@@ -10,80 +10,97 @@
 	<div class="container-fluid">
 		<div class="page-header"></div>
         <div class="row">
-            <div class="col-sm-11 col-sm-offset-1" id="dateTime"></div>
+            <div class="col-md-11 col-md-offset-1" id="dateTime"></div>
         </div>
-        <div class="row">&nbsp;</div>
         <div class="row">
-            <div class="col-sm-7">
-                <div class="col-sm-3 col-sm-offset-1" id="clock"></div>
-                <div class="col-sm-3" id="clockSeconds"></div>
+            <div class="col-md-7">
+                <div class="col-md-3 col-md-offset-1" id="clock"></div>
+                <div class="col-md-3" id="clockSeconds"></div>
             </div>
-            <div id="currentWeather" class="col-sm-5">
-                <div class="col-sm-4">
+            <div id="currentWeather" class="col-md-4 col-md-offset-1">
+                <div class="col-md-3">
                     <img id="currentWeatherIcon" src="assets/images/2.svg" alt="default" class="largeImg" />
                 </div>
-                <div id="currentWeatherText" class="col-sm-8"><!-- Current Temperature --></div>
+                <div id="currentWeatherText" class="col-md-8"><!-- Current Temperature --></div>
             </div>
         </div>
-        <div class="row">&nbsp;</div>
-        <!-- Five Day weather starts -->
         <!-- TODO: replace with an Angular component -->
         <div class="row">
-            <div id="day0" class="col-sm-1 col-sm-offset-7 smallText"></div>
-            <div id="icon0" class="col-sm-1">
-                <div class="imgHelper">
-                    <img src="assets/images/2.svg" class="smallImg"/>
+            <div class="col-md-6 col-md-offset-1"> <!-- Todo list starts -->
+                <div class="row">&nbsp;</div>
+                <div class="row">
+                    <div class="col-md-6 checklistItem">List Item #1</div>
+                    <div class="col-md-6 checklistItem">List Item #2</div>
                 </div>
-            </div>
-            <div id="max0" class="col-sm-1 smallText text-right"></div>
-            <div id="min0" class="col-sm-1 smallText text-right"></div>
-        </div>
-        <div class="row">&nbsp;</div>
-        <div class="row">
-            <div id="day1" class="col-sm-1 col-sm-offset-7 smallText"></div>
-            <div id="icon1" class="col-sm-1">
-                <div class="imgHelper">
-                    <img src="assets/images/2.svg" class="smallImg"/>
+                <div class="row">
+                    <div class="col-md-6 checklistItem">List Item #3</div>
+                    <div class="col-md-6 checklistItem">List Item #4</div>
                 </div>
-            </div>
-            <div id="max1" class="col-sm-1 smallText text-right"></div>
-            <div id="min1" class="col-sm-1 smallText text-right"></div>
-        </div>
-        <div class="row">&nbsp;</div>
-        <div class="row">
-            <div id="day2" class="col-sm-1 col-sm-offset-7 smallText"></div>
-            <div id="icon2" class="col-sm-1">
-                <div class="imgHelper">
-                    <img src="assets/images/2.svg" class="smallImg"/>
+                <div class="row">
+                    <div class="col-md-6 checklistItem">List Item #5</div>
+                    <div class="col-md-6 checklistItem">List Item #6</div>
                 </div>
-            </div>
-            <div id="max2" class="col-sm-1 smallText text-right"></div>
-            <div id="min2" class="col-sm-1 smallText text-right"></div>
-        </div>
-        <div class="row">&nbsp;</div>
-        <div class="row">
-            <div id="day3" class="col-sm-1 col-sm-offset-7 smallText"></div>
-            <div id="icon3" class="col-sm-1">
-                <div class="imgHelper">
-                    <img src="assets/images/2.svg" class="smallImg"/>
+                <div class="row">
+                    <div class="col-md-6 checklistItem">List Item #7</div>
+                    <div class="col-md-6 checklistItem">List Item #8</div>
                 </div>
-            </div>
-            <div id="max3" class="col-sm-1 smallText text-right"></div>
-            <div id="min3" class="col-sm-1 smallText text-right"></div>
-        </div>
-        <div class="row">&nbsp;</div>
-        <div class="row">
-            <div id="day4" class="col-sm-1 col-sm-offset-7 smallText"></div>
-            <div id="icon4" class="col-sm-1">
-                <div class="imgHelper">
-                    <img src="assets/images/2.svg" class="smallImg"/>
+                <div class="row">
+                    <div class="col-md-6 checklistItem">List Item #9</div>
+                    <div class="col-md-6 checklistItem">List Item #10</div>
                 </div>
-            </div>
-            <div id="max4" class="col-sm-1 smallText text-right"></div>
-            <div id="min4" class="col-sm-1 smallText text-right"></div>
+                <div class="row">
+                    <div class="col-md-6 checklistItem">List Item #11</div>
+                    <div class="col-md-6 checklistItem">List Item #12</div>
+                </div>
+            </div> <!-- Todo list ends -->
+            <!-- TODO: replace with an Angular component -->
+            <div id="forecast" class="col-md-5"> <!-- Five Day weather starts -->
+                <div class="row smallText">
+                    <div id="day0" class="col-md-2 col-md-offset-2"></div>
+                    <div class="col-md-2 imgHelper">
+                        <img id="icon0" class="smallImg" src="" />
+                    </div>
+                    <div id="max0" class="col-md-2 text-right"></div>
+                    <div id="min0" class="col-md-2 text-right"></div>
+                </div>
+                <div class="row smallText">
+                    <div id="day1" class="col-md-2 col-md-offset-2"></div>
+                    <div class="col-md-2 imgHelper">
+                        <img id="icon1" class="smallImg" src="" />
+                    </div>
+                    <div id="max1" class="col-md-2 text-right"></div>
+                    <div id="min1" class="col-md-2 text-right"></div>
+                </div>
+                <div class="row smallText">
+                    <div id="day2" class="col-md-2 col-md-offset-2"></div>
+                    <div class="col-md-2 imgHelper">
+                        <img id="icon2" class="smallImg" src="" />
+                    </div>
+                    <div id="max2" class="col-md-2 text-right"></div>
+                    <div id="min2" class="col-md-2 text-right"></div>
+                </div>
+                <div class="row smallText">
+                    <div id="day3" class="col-md-2 col-md-offset-2"></div>
+                    <div class="col-md-2 imgHelper">
+                        <img id="icon3" class="smallImg" src="" />
+                    </div>
+                    <div id="max3" class="col-md-2 text-right"></div>
+                    <div id="min3" class="col-md-2 text-right"></div>
+                </div>
+                <div class="row smallText">
+                    <div id="day4" class="col-md-2 col-md-offset-2"></div>
+                    <div class="col-md-2 imgHelper">
+                        <img id="icon4" class="smallImg" src="" />
+                    </div>
+                    <div id="max4" class="col-md-2 text-right"></div>
+                    <div id="min4" class="col-md-2 text-right"></div>
+                </div>
+            </div> <!-- Five Day weather ends -->
         </div>
-        <!-- Five Day weather ends -->
     </div>
+    <!--div>Icons made by <a href="http://www.flaticon.com/authors/google" title="Google">
+        Google</a> from <a href="http://www.flaticon.com" title="Flaticon">www.flaticon.com</a> 
+        is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0">CC BY 3.0</a></div>-->
     
     <script src="node_modules/jquery/dist/jquery.min.js"></script>
     <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
@@ -219,7 +236,7 @@
             var sunriseSunsetUrl = "http://api.sunrise-sunset.org/json?lat=" + latitude + "&lng=" + longitude + "&date=today";
             var times;
             
-            $.ajax({
+            /*$.ajax({
                 url: sunriseSunsetUrl,
                 async: false,
                 dataType: 'json',
@@ -227,7 +244,7 @@
                 success: function(data) {
                     times = data;
                 }
-            });
+            });*/
             
             if(times != undefined && times.result != undefined) {
                 sunriseTime = times.result.sunrise;
@@ -296,11 +313,14 @@
             var forecasts = interpretForecastData(forecastWeather.list);
             
             for(var i = 0; i < 5; ++i) {                
-                $("#day" + i).html(forecasts[i].dayText);
-                $("#max" + i).html(forecasts[i].tempMax);
-                $("#min" + i).html(forecasts[i].tempMin);
-                $("#icon" + i).attr('src', IMAGE_PATH + forecasts[i].weatherIcon);
-            } 
+                $('#day' + i).html(forecasts[i].dayText);
+                $('#max' + i).html(forecasts[i].tempMax);
+                $('#min' + i).html(forecasts[i].tempMin);
+                $('#icon' + i).attr('src', IMAGE_PATH + forecasts[i].weatherIcon);
+            }
+            
+            console.log('Forecasts: ');
+            console.log(forecasts);
         }      
         
         function interpretForecastData(forecastData) {
@@ -360,6 +380,7 @@
                         $.each(entry.weatherTypes, function(key, value) {
                             if(value[WEATHER_TYPE_INDEX] == weatherType) {
                                 value[WEATHER_COUNT_INDEX] += 1;
+                                valueFound = true;
                             }
                         });
                         

@@ -12,7 +12,6 @@ img {
 
 .imgHelper {
     display: inline-block;
-    height: 100%;
     vertical-align: middle;
     align-content: center;
 }
@@ -37,4 +36,18 @@ img {
 #clockSeconds {
     margin-top: 20px;
     margin-left: 35px;
+}
+
+.checklistItem {
+    background-image: url('../images/checkbox.png');
+    background-size: 30px 30px;
+    background-repeat: no-repeat;
+    background-position: left;
+    padding-left: 50px;
+    margin-bottom: 1em;
+    font-size: 30px;
+}
+
+.row {
+    margin-bottom: 0.25em;
 }
