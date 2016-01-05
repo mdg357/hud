@@ -20,7 +20,7 @@ img {
     font-size: 40px;
 }
 
-#currentWeatherText, #clock {
+#currentWeatherTemperature, #clock {
     font-size: 90px;
 }
 

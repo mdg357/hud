@@ -7,26 +7,26 @@
 	<link href="assets/css/styles.css" type="text/css" rel="stylesheet" />
 </head>
 <body>
-	<div class="container-fluid">
+	<div class="container-fluid" ng-app="hudApp">
 		<div class="page-header"></div>
         <div class="row">
-            <div class="col-md-11 col-md-offset-1" id="dateTime"></div>
+            <div ng-controller="clockController" class="col-md-11 col-md-offset-1" id="dateTime">{{clock.dateTime}}</div>
         </div>
         <div class="row">
-            <div class="col-md-7">
-                <div class="col-md-3 col-md-offset-1" id="clock"></div>
-                <div class="col-md-3" id="clockSeconds"></div>
+            <div ng-controller="clockController" class="col-md-7">
+                <div class="col-md-3 col-md-offset-1" id="clock">{{clock.hoursAndMinutes}}</div>
+                <div class="col-md-3" id="clockSeconds">{{clock.seconds}}</div>
             </div>
-            <div id="currentWeather" class="col-md-4 col-md-offset-1">
+            <div ng-controller="currentWeatherController" id="currentWeather" class="col-md-4 col-md-offset-1">
                 <div class="col-md-3">
-                    <img id="currentWeatherIcon" src="assets/images/2.svg" alt="default" class="largeImg" />
+                    <img id="currentWeatherIcon" class="largeImg" ng-src="assets/images/{{currentWeather.icon}}" alt="Weather Icon" />
                 </div>
-                <div id="currentWeatherText" class="col-md-8"><!-- Current Temperature --></div>
+                <div id="currentWeatherTemperature" class="col-md-8">{{currentWeather.temperature}} &deg;</div>
             </div>
         </div>
         <!-- TODO: replace with an Angular component -->
         <div class="row">
-            <div class="col-md-6 col-md-offset-1"> <!-- Todo list starts -->
+            <div ng-controller="checklistController" class="col-md-6 col-md-offset-1"> <!-- Todo list starts -->
                 <div class="row">&nbsp;</div>
                 <div class="row">
                     <div class="col-md-6 checklistItem">List Item #1</div>
@@ -54,7 +54,7 @@
                 </div>
             </div> <!-- Todo list ends -->
             <!-- TODO: replace with an Angular component -->
-            <div id="forecast" class="col-md-5"> <!-- Five Day weather starts -->
+            <div ng-controller="forecastController" id="forecast" class="col-md-5"> <!-- Five Day weather starts -->
                 <div class="row smallText">
                     <div id="day0" class="col-md-2 col-md-offset-2"></div>
                     <div class="col-md-2 imgHelper">
@@ -104,7 +104,7 @@
     
     <script src="node_modules/jquery/dist/jquery.min.js"></script>
     <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
-    <script src="node_modules/angular/angular.min.js"></script>
+    <script src="node_modules/angular/angular.js"></script>
     <script src="node_modules/moment/min/moment.min.js"></script>
     <script src="assets/js/script.js"></script>
 
@@ -173,6 +173,8 @@
         var HABITICA_USER_KEY = "";
         var HABITICA_API_KEY = "";
         var IMAGE_PATH = "assets/images/";
+        var CURRENT_WEATHER_URL = "http://api.openweathermap.org/data/2.5/weather?id=" + CITY_ID + "&APPID=" + WEATHER_API_KEY + "&units=imperial";
+        var FORECAST_WEATHER_URL = "http://api.openweathermap.org/data/2.5/forecast/city?id=" + CITY_ID + "&APPID=" + WEATHER_API_KEY + "&units=imperial";
         
         // Set timezone offset
         moment().utcOffset("-06:00"); // GMT -06:00
@@ -215,12 +217,6 @@
             return icon;
         }
         
-        function updateTime() {
-            $("#dateTime").html(moment().format('dddd, MMMM D, YYYY'));
-            $("#clock").html(moment().format('hh:mm'));
-            $("#clockSeconds").html(moment().format('ss'));            
-        }
-        
         // Returns true if it is current day (time is between sunrise and sunset).
         // Also returns true if sunrise/sunset are unknown
         function isDayTime() {
@@ -253,43 +249,6 @@
         }
         
         // TODO: redo using Angular promises
-        function getCurrentWeather() {
-            if(WEATHER_API_KEY == "") {
-                console.log("Weather API Key not set, exiting...");
-                return false;
-            }
-            
-            // Open Weather Map API: http://openweathermap.org/current#one
-            var url = "http://api.openweathermap.org/data/2.5/weather?id=" 
-                + CITY_ID + "&APPID=" + WEATHER_API_KEY + "&units=imperial";
-            var currentWeather = undefined;
-            
-            $.ajax({
-                url: url,
-                async: false,
-                dataType: 'json',
-                success: function(data) {
-                    currentWeather = data;
-                }
-            });
-            
-            if(currentWeather != undefined) {
-                var weatherId = currentWeather.weather[0].id;
-                var latitude = currentWeather.coord.lat;
-                var longitude = currentWeather.coord.lon;
-                var temperature = Math.round(currentWeather.main.temp);
-            
-                if(SUNRISE_TIME == null || SUNSET_TIME == null)
-                    getSunriseSunsetTimes(latitude, longitude);
-            
-                var weatherIcon = getWeatherIcon(weatherId);
-            
-                $("#currentWeatherText").html(temperature + ' &deg;');
-                $("#currentWeatherIcon").attr('src', IMAGE_PATH + weatherIcon);
-            }
-        }
-        
-        // TODO: redo using Angular promises
         function getforecastWeather() {
             if(WEATHER_API_KEY == "") {
                 console.log("Weather API Key not set, exiting...");
@@ -297,12 +256,10 @@
             }
             
             // Open Weather Map API: http://openweathermap.org/forecast5#5days
-            var url = "http://api.openweathermap.org/data/2.5/forecast/city?id=" 
-                + CITY_ID + "&APPID=" + WEATHER_API_KEY + "&units=imperial";
             var forecastWeather;            
     
             $.ajax({
-                url: url,
+                url: FORECAST_WEATHER_URL,
                 async: false,
                 dataType: 'json',
                 success: function(data) {
@@ -321,7 +278,7 @@
             
             console.log('Forecasts: ');
             console.log(forecasts);
-        }      
+        }
         
         function interpretForecastData(forecastData) {
             var dateTimeFormat = "MM/DD/YYYY";
@@ -436,19 +393,74 @@
             })
             return forecasts;
         }
+        
+        var hudApp = angular.module('hudApp', []);
+        
+        hudApp.controller('currentWeatherController', ['$scope', '$interval', '$http',
+            function($scope, $interval, $http) {
+                // Set the default values
+                $scope.currentWeather = {
+                    icon: "2.svg",
+                    temperature: "?"
+                };
+                
+                $scope.getCurrentWeather = function() {
+                    if(WEATHER_API_KEY == "" || CITY_ID == "") {
+                        console.log("Weather API Key or City ID not set, exiting...");
+                        return false;
+                    }
+
+                    $http.get(CURRENT_WEATHER_URL)
+                        .success(function(response) {                            
+                            $scope.currentWeather = {                                
+                                weatherId: response.weather[0].id,
+                                latitude: response.coord.lat,
+                                longitude: response.coord.lon,
+                                temperature: Math.round(response.main.temp),
+                                icon: getWeatherIcon(response.weather[0].id)
+                            }
+                            
+                            // TODO: retool Sunrise sunset to use angular promises too
+                            /*if(SUNRISE_TIME == null || SUNSET_TIME == null)
+                            getSunriseSunsetTimes(latitude, longitude);*/
+                        })
+                        .error(function(response) {
+                            console.log("Error retreiving current weather data");
+                        });
+                };
+                
+                // Update the current, then update it every 30 minutes thereafter 
+                $scope.getCurrentWeather();                
+                $interval( function() { $scope.getCurrentWeather(); }, 1000 * 60 * 30);
+            }
+        ]);
+        
+        hudApp.controller('forecastController', function($scope) {            
+            //getforecastWeather();            
+            //setInterval('getforecastWeather()', 1000 * 60 * 60 * 12); // 12 hours
+        });
+        
+        hudApp.controller('checklistController', function($scope) {
+            
+        });
+        
+        hudApp.controller('clockController', ['$scope', '$interval', 
+            function($scope, $interval) {
+                $scope.updateTime = function() {
+                    $scope.clock = {
+                        dateTime: moment().format('dddd, MMMM D, YYYY'),
+                        hoursAndMinutes: moment().format('hh:mm'),
+                        seconds: moment().format('ss')
+                    };
+                };
+                
+                // Update the time, then update it every 1 second thereafter 
+                $scope.updateTime();                
+                $interval( function() { $scope.updateTime(); }, 1000);
+            }
+        ]);
 
         $(document).ready(function() {
-            // Execute each function initially
-            updateTime();
-            getCurrentWeather();
-            getforecastWeather();
-            
-            // Set the interval to run them at
-            setInterval('updateTime()', 1000); // 1 second
-            setInterval('getCurrentWeather()', 1000 * 60 * 30); // 30 minutes
-            setInterval('getforecastWeather()', 1000 * 60 * 60 * 12); // 12 hours
-            
-            //getHabiticaTasks();
         });
         
          </script>
