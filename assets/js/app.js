@@ -1,19 +1,24 @@
 var hudApp = angular.module('hudApp', []);
 
+/// <summary>
+/// Current weather controller
+/// </summary>
 hudApp.controller('currentWeatherController', ['$scope', '$interval', '$http',
     function($scope, $interval, $http) {        
         $scope.getCurrentWeather = function() {
-            if(WEATHER_API_KEY == "" || CITY_ID == "") {
-                console.log("Weather API Key or City ID not set, exiting...");
+            if(WEATHER_API_KEY == SETTINGS.text.default || CITY_ID == SETTINGS.text.default) {
+                console.log(SETTINGS.errors.weather_keys);
                 return false;
             }
 
-            $http.get(CURRENT_WEATHER_URL)
+            // Get the current weather data
+            $http.get(SETTINGS.urls.current_weather)
                 .success(function(response) {
                     var latitude = response.coord.lat;
                     var longitude = response.coord.lon;
-                    var sunriseSunsetUrl = "http://api.sunrise-sunset.org/json?lat=" 
-                        + latitude + "&lng=" + longitude + "&date=today";
+                    var sunriseSunsetUrl = SETTINGS.urls.sunrise_sunset[0] + latitude 
+                        + SETTINGS.urls.sunrise_sunset[1] + longitude 
+                        + SETTINGS.urls.sunrise_sunset[2];                    
                     
                     $scope.currentWeather = {                                
                         weatherId: response.weather[0].id,
@@ -24,85 +29,113 @@ hudApp.controller('currentWeatherController', ['$scope', '$interval', '$http',
                     }
                     
                     // If not already available, retreive the sunrise and sunset times
-                    if(SUNRISE_TIME == null || SUNSET_TIME == null) {                        
+                    if(SETTINGS.sunrise_time == null || SETTINGS.sunset_time == null) {                        
                         $http.get(sunriseSunsetUrl)
                             .success(function(response) {
-                                SUNRISE_TIME = response.results.sunrise;
-                                SUNSET_TIME = response.results.sunset;
+                                SETTINGS.sunrise_time = response.results.sunrise;
+                                SETTINGS.sunset_time = response.results.sunset;
                             })
                             .error(function(response) {
-                                console.log("Error retreiving sunrise/sunset data");
+                                console.log(SETTINGS.errors.sunrise_sunset_http);
                             });
                     }
                 })
                 .error(function(response) {
-                    console.log("Error retreiving current weather data");
+                    console.log(SETTINGS.errors.current_weather_http);
                 });
         };
         
-        // Update the current data, then update it every 30 minutes thereafter 
+        // Get the current data, then update it every 30 minutes thereafter 
         $scope.getCurrentWeather();                
-        $interval( function() { $scope.getCurrentWeather(); }, 1000 * 60 * 30);
+        $interval( function() { $scope.getCurrentWeather(); }, 
+            SETTINGS.intervals.current_weather);
     }
 ]);
 
+/// <summary>
+/// Forecast Weather controller
+/// </summary>
 hudApp.controller('forecastController', ['$scope', '$interval', '$http',
     function($scope, $interval, $http) {                
         $scope.getForecastWeather = function() {
-            if(WEATHER_API_KEY == "" || CITY_ID == "") {
-                console.log("Weather API Key or City ID not set, exiting...");
+            if(WEATHER_API_KEY == SETTINGS.text.default || CITY_ID == SETTINGS.text.default) {
+                console.log(SETTINGS.errors.weather_keys);
                 return false;
             }
 
-            $http.get(FORECAST_WEATHER_URL)
+            // Get the weather forecast data
+            $http.get(SETTINGS.urls.forecast_weather)
                 .success(function(response) {
                     $scope.forecasts = interpretForecastData(response.list);
                 })
                 .error(function(response) {
-                    console.log("Error retreiving forecast weather data");
+                    console.log(SETTINGS.errors.forecast_weather_http);
                 });
         };
         
-        // Update the forecast data, then update it every 12 hours thereafter 
+        // Get the forecast data, then update it every 12 hours thereafter 
         $scope.getForecastWeather();                
-        $interval( function() { $scope.getForecastWeather(); }, 1000 * 60 * 60 * 12);
+        $interval( function() { $scope.getForecastWeather(); }, 
+            SETTINGS.intervals.forecast_weather);
     }
 ]);
 
+/// <summary>
+/// Controller for the Habitica checklist
+/// </summary>
 hudApp.controller('checklistController', ['$scope', '$interval', '$http',
-    function($scope, $interval, $http) {
-        $scope.items = {
-            totalItems: 2,
-            list: [
-                [
-                    "List Item #1",
-                    "List Item #2"
-                ],
-                [
-                    "List Item #3",
-                    "List Item #4"
-                ],
-            ]
-        } // TODO: build this out of the Habitica data
+    function($scope, $interval, $http) {                  
+        $scope.getHabiticaTasks = function() {
+            if(HABITICA_USER_KEY == SETTINGS.text.default 
+                || HABITICA_API_KEY == SETTINGS.text.default) {
+                console.log(SETTINGS.errors.habitica_key);
+                return false;
+            }
+
+            // Get the Habitica data
+            $http.get(SETTINGS.urls.habitica_tasks, {
+                // Add the authorization headers
+                headers: {
+                    'x-api-user': HABITICA_USER_KEY,
+                    'x-api-key': HABITICA_API_KEY,
+                }
+            })
+            .success(function(response) {
+                $scope.items = interpretHabitData(response);
+            })
+            .error(function(response) {
+                console.log(SETTINGS.errors.habitica_http);
+            });
+        };
         
+        // Determine whether or not the two column layout should be used
         $scope.useTwoColumns = function() {
-            return ($scope.items.totalItems > MAX_CHECKLIST_ITEMS_PER_COLUMN);
+            return ($scope.items.totalItems > SETTINGS.max_checklist_items_per_column);
         }
+        
+        // Get the Habitica task data, then update it every 30 minutes thereafter 
+        $scope.getHabiticaTasks();                
+        $interval( function() { $scope.getHabiticaTasks(); }, 
+            SETTINGS.intervals.habitica_tasks);
     }
 ]);
 
+/// <summary>
+/// Controller for the date and time aspect of the page
+/// </summary>
 hudApp.controller('clockController', ['$scope', '$interval', 
     function($scope, $interval) {
         $scope.updateTime = function() {
             $scope.clock = {
-                dateTime: moment().format('dddd, MMMM D, YYYY'),
-                hoursAndMinutes: moment().format('hh:mm'),
-                seconds: moment().format('ss')
+                dateTime: moment().format(SETTINGS.formatting.dateTime),
+                hoursAndMinutes: moment().format(SETTINGS.formatting.hoursAndMinutes),
+                seconds: moment().format(SETTINGS.formatting.seconds)
             };
         };
         
         // Update the time, then update it every 1 second thereafter 
         $scope.updateTime();                
-        $interval( function() { $scope.updateTime(); }, 1000);
+        $interval( function() { $scope.updateTime(); }, 
+            SETTINGS.intervals.clock);
     }
 ]);

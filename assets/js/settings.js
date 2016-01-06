@@ -1,25 +1,66 @@
-var SUNRISE_TIME;
-var SUNSET_TIME;
-var DEFAULT_WEATHER_ID_DAY = 0;
-var DEFAULT_WEATHER_ID_NIGHT = 1;
-var WEATHER_TYPE_INDEX = 0;
-var WEATHER_COUNT_INDEX = 1;        
-var CITY_ID = "5074472"; // Omaha, NE
 var WEATHER_API_KEY = "";
 var HABITICA_USER_KEY = "";
 var HABITICA_API_KEY = "";
-var IMAGE_PATH = "assets/images/";
-var CURRENT_WEATHER_URL = "http://api.openweathermap.org/data/2.5/weather?id=" + CITY_ID + "&APPID=" + WEATHER_API_KEY + "&units=imperial";
-var FORECAST_WEATHER_URL = "http://api.openweathermap.org/data/2.5/forecast/city?id=" + CITY_ID + "&APPID=" + WEATHER_API_KEY + "&units=imperial";
-var MAX_CHECKLIST_ITEMS = 14;
-var MAX_CHECKLIST_ITEMS_PER_COLUMN = 7;
+var CITY_ID = "5074472"; // Omaha, NE
 
-// Set timezone offset
-moment().utcOffset("-06:00"); // GMT -06:00
+var SETTINGS = {
+    sunrise_time: null,
+    sunset_time: null,
+    default_weather_id_day: 0,
+    default_weather_id_night: 1,
+    weather_type_index: 0,
+    weather_count_index: 1,
+    image_path: "assets/images/",
+    habitica_task_type: "daily",
+    urls: {
+        current_weather: "http://api.openweathermap.org/data/2.5/weather?id=" + CITY_ID + "&APPID=" + WEATHER_API_KEY + "&units=imperial",
+        forecast_weather: "http://api.openweathermap.org/data/2.5/forecast/city?id=" + CITY_ID + "&APPID=" + WEATHER_API_KEY + "&units=imperial",
+        habitica_tasks: "https://habitica.com/api/v2/user/tasks",
+        sunrise_sunset: ["http://api.sunrise-sunset.org/json?lat=", "&lng=", "&date=today"]
+    },
+    text: {
+        default: "",
+        unknown: "?",
+    },
+    errors: {
+        habitica_http: "Error retreiving Habitica task data",
+        habitica_key: "Habitica API or User Key not set, exiting...",
+        forecast_weather_http: "Error retreiving forecast weather data",
+        current_weather_http: "Error retreiving current weather data",
+        weather_keys: "Weather API Key or City ID not set, exiting...",
+        sunrise_sunset_http: "Error retreiving sunrise/sunset data"
+    },
+    intervals: {
+        current_weather: 1000 * 60 * 30, // 30 minutes
+        forecast_weather: 1000 * 60 * 60 * 12, // 12 hours
+        habitica_tasks: 1000 * 60 * 30, // 30 minutes
+        clock: 1000
+    },
+    formatting: {
+        dateTime: "dddd, MMMM D, YYYY",
+        sunrise_sunset: "h:mm:ss A",
+        hoursAndMinutes: "hh:mm",
+        three_letter_day: "ddd",
+        date: "MM/DD/YYYY",
+        seconds: "ss",
+        unix: "X",
+    },
+    shortDayStrings: {
+        sun: "su",        
+        mon: "m", 
+        tue: "t",
+        wed: "w",
+        thu: "th",
+        fri: "f",
+        sat: "s"
+    },
+    max_checklist_items: 14,
+    max_checklist_items_per_column: 7
+};
 
 var WEATHER_ICON_LIST = [
-    { id: DEFAULT_WEATHER_ID_DAY, icon: "2.svg", description: "default-day" },
-    { id: DEFAULT_WEATHER_ID_NIGHT, icon: "3.svg", description: "default-night" },
+    { id: SETTINGS.default_weather_id_day, icon: "2.svg", description: "default-day" },
+    { id: SETTINGS.default_weather_id_night, icon: "3.svg", description: "default-night" },
     { id: 200, icon: "27.svg", description: "thunderstorm with light rain" },
     { id: 201, icon: "27.svg", description: "thunderstorm with rain" },
     { id: 202, icon: "27.svg", description: "thunderstorm with heavy rain" },
