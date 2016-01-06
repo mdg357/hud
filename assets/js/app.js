@@ -9,18 +9,31 @@ hudApp.controller('currentWeatherController', ['$scope', '$interval', '$http',
             }
 
             $http.get(CURRENT_WEATHER_URL)
-                .success(function(response) {                            
+                .success(function(response) {
+                    var latitude = response.coord.lat;
+                    var longitude = response.coord.lon;
+                    var sunriseSunsetUrl = "http://api.sunrise-sunset.org/json?lat=" 
+                        + latitude + "&lng=" + longitude + "&date=today";
+                    
                     $scope.currentWeather = {                                
                         weatherId: response.weather[0].id,
-                        latitude: response.coord.lat,
-                        longitude: response.coord.lon,
+                        latitude: latitude,
+                        longitude: longitude,
                         temperature: Math.round(response.main.temp),
                         icon: getWeatherIcon(response.weather[0].id)
                     }
                     
-                    // TODO: retool Sunrise sunset to use angular promises too
-                    /*if(SUNRISE_TIME == null || SUNSET_TIME == null)
-                    getSunriseSunsetTimes(latitude, longitude);*/
+                    // If not already available, retreive the sunrise and sunset times
+                    if(SUNRISE_TIME == null || SUNSET_TIME == null) {                        
+                        $http.get(sunriseSunsetUrl)
+                            .success(function(response) {
+                                SUNRISE_TIME = response.results.sunrise;
+                                SUNSET_TIME = response.results.sunset;
+                            })
+                            .error(function(response) {
+                                console.log("Error retreiving sunrise/sunset data");
+                            });
+                    }
                 })
                 .error(function(response) {
                     console.log("Error retreiving current weather data");
@@ -56,9 +69,27 @@ hudApp.controller('forecastController', ['$scope', '$interval', '$http',
     }
 ]);
 
-hudApp.controller('checklistController', function($scope) {
-    
-});
+hudApp.controller('checklistController', ['$scope', '$interval', '$http',
+    function($scope, $interval, $http) {
+        $scope.items = {
+            totalItems: 2,
+            list: [
+                [
+                    "List Item #1",
+                    "List Item #2"
+                ],
+                [
+                    "List Item #3",
+                    "List Item #4"
+                ],
+            ]
+        } // TODO: build this out of the Habitica data
+        
+        $scope.useTwoColumns = function() {
+            return ($scope.items.totalItems > MAX_CHECKLIST_ITEMS_PER_COLUMN);
+        }
+    }
+]);
 
 hudApp.controller('clockController', ['$scope', '$interval', 
     function($scope, $interval) {

@@ -24,33 +24,13 @@
                 <div id="currentWeatherTemperature" class="col-md-8">{{currentWeather.temperature}} &deg;</div>
             </div>
         </div>
-        <!-- TODO: replace with an Angular component -->
         <div class="row">
-            <div ng-controller="checklistController" class="col-md-6 col-md-offset-1"> <!-- Todo list starts -->
-                <div class="row">&nbsp;</div>
-                <div class="row">
-                    <div class="col-md-6 checklistItem">List Item #1</div>
-                    <div class="col-md-6 checklistItem">List Item #2</div>
-                </div>
-                <div class="row">
-                    <div class="col-md-6 checklistItem">List Item #3</div>
-                    <div class="col-md-6 checklistItem">List Item #4</div>
-                </div>
-                <div class="row">
-                    <div class="col-md-6 checklistItem">List Item #5</div>
-                    <div class="col-md-6 checklistItem">List Item #6</div>
-                </div>
-                <div class="row">
-                    <div class="col-md-6 checklistItem">List Item #7</div>
-                    <div class="col-md-6 checklistItem">List Item #8</div>
-                </div>
-                <div class="row">
-                    <div class="col-md-6 checklistItem">List Item #9</div>
-                    <div class="col-md-6 checklistItem">List Item #10</div>
-                </div>
-                <div class="row">
-                    <div class="col-md-6 checklistItem">List Item #11</div>
-                    <div class="col-md-6 checklistItem">List Item #12</div>
+            <div class="row">&nbsp;</div>
+            <!-- Todo list starts -->
+            <div ng-controller="checklistController" class="col-md-6 col-md-offset-1">
+                <div ng-repeat="item in items.list" class="row">
+                    <div class="col-md-6 checklistItem">{{item[0]}}</div>
+                    <div ng-if="useTwoColumns()" class="col-md-6 checklistItem">{{item[1]}}</div>
                 </div>
             </div> 
             <!-- Todo list ends -->
@@ -126,27 +106,6 @@
                     && moment.utc() < moment.utc(SUNSET_TIME, "h:mm:ss A"));
             }            
             return true;
-        }
-        
-        // TODO: redo using Angular promises
-        function getSunriseSunsetTimes(latitude, longitude) {
-            var sunriseSunsetUrl = "http://api.sunrise-sunset.org/json?lat=" + latitude + "&lng=" + longitude + "&date=today";
-            var times;
-            
-            /*$.ajax({
-                url: sunriseSunsetUrl,
-                async: false,
-                dataType: 'json',
-                timeout: 5000,
-                success: function(data) {
-                    times = data;
-                }
-            });*/
-            
-            if(times != undefined && times.result != undefined) {
-                sunriseTime = times.result.sunrise;
-                sunsetTime = times.result.sunset;
-            }
         }
         
         function interpretForecastData(forecastData) {

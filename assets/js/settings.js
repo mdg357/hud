@@ -11,6 +11,8 @@ var HABITICA_API_KEY = "";
 var IMAGE_PATH = "assets/images/";
 var CURRENT_WEATHER_URL = "http://api.openweathermap.org/data/2.5/weather?id=" + CITY_ID + "&APPID=" + WEATHER_API_KEY + "&units=imperial";
 var FORECAST_WEATHER_URL = "http://api.openweathermap.org/data/2.5/forecast/city?id=" + CITY_ID + "&APPID=" + WEATHER_API_KEY + "&units=imperial";
+var MAX_CHECKLIST_ITEMS = 14;
+var MAX_CHECKLIST_ITEMS_PER_COLUMN = 7;
 
 // Set timezone offset
 moment().utcOffset("-06:00"); // GMT -06:00
