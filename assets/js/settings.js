@@ -12,6 +12,7 @@ var SETTINGS = {
     weather_count_index: 1,
     image_path: "assets/images/",
     habitica_task_type: "daily",
+    countdown_end_time: "05/27/2016 10:00:00 PM", //UTC time
     urls: {
         current_weather: "http://api.openweathermap.org/data/2.5/weather?id=" + CITY_ID + "&APPID=" + WEATHER_API_KEY + "&units=imperial",
         forecast_weather: "http://api.openweathermap.org/data/2.5/forecast/city?id=" + CITY_ID + "&APPID=" + WEATHER_API_KEY + "&units=imperial",
@@ -34,7 +35,8 @@ var SETTINGS = {
         current_weather: 1000 * 60 * 30, // 30 minutes
         forecast_weather: 1000 * 60 * 60 * 12, // 12 hours
         habitica_tasks: 1000 * 60 * 30, // 30 minutes
-        clock: 1000
+        clock: 1000,
+        countdown: 1000
     },
     formatting: {
         dateTime: "dddd, MMMM D, YYYY",
@@ -54,8 +56,8 @@ var SETTINGS = {
         fri: "f",
         sat: "s"
     },
-    max_checklist_items: 14,
-    max_checklist_items_per_column: 7
+    max_checklist_items: 12,
+    max_checklist_items_per_column: 6
 };
 
 var WEATHER_ICON_LIST = [

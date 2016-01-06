@@ -21,7 +21,7 @@ img {
     align-content: center;
 }
 
-#windText, .smallText, #dateTime, #clockSeconds {
+#windText, .smallText, #dateTime, #clockSeconds, #countdown {
     font-size: 40px;
 }
 

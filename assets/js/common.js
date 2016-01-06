@@ -187,12 +187,10 @@ function interpretForecastData(forecastData) {
         
         if(mostPrevalentIndex != undefined) {
             value.weatherId = value.weatherTypes[mostPrevalentIndex][SETTINGS.weather_type_index];
-            value.weatherIcon = getWeatherIcon(value.weatherId);
+            value.icon = getWeatherIcon(value.weatherId);
         } else {
         }
     })
-    
-    console.log(forecasts);
     
     return forecasts;
 }
