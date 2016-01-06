@@ -7,10 +7,10 @@
 	<link href="assets/css/styles.css" type="text/css" rel="stylesheet" />
 </head>
 <body>
-	<div class="container-fluid" ng-app="hudApp">
+	<div class="wrapper container-fluid" ng-app="hudApp">
 		<div class="page-header"></div>
         <div class="row">
-            <div ng-controller="clockController" class="col-md-11 col-md-offset-1" id="dateTime">{{clock.dateTime}}</div>
+            <div ng-controller="clockController" class="col-md-10 col-md-offset-1" id="dateTime">{{clock.dateTime}}</div>
         </div>
         <div class="row">
             <div ng-controller="clockController" class="col-md-7">
@@ -44,7 +44,7 @@
                     <div id="max{{$index}}" class="col-md-2 text-right">{{forecast.tempMax}}</div>
                     <div id="min{{$index}}" class="col-md-2 text-right">{{forecast.tempMin}}</div>
                 </div>
-            </div> 
+            </div>
             <!-- Five Day weather ends -->
         </div>
     </div>

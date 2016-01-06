@@ -94,7 +94,7 @@ function interpretForecastData(forecastData) {
             tempMin: undefined,
             tempMax: undefined,
             weatherTypes: [],
-            weatherIcon: SETTINGS.text.default,
+            icon: SETTINGS.text.default,
             weatherId: SETTINGS.text.default
         };
         forecasts.push(value);
@@ -191,5 +191,8 @@ function interpretForecastData(forecastData) {
         } else {
         }
     })
+    
+    console.log(forecasts);
+    
     return forecasts;
 }
