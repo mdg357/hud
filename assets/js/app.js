@@ -1,13 +1,7 @@
 var hudApp = angular.module('hudApp', []);
 
 hudApp.controller('currentWeatherController', ['$scope', '$interval', '$http',
-    function($scope, $interval, $http) {
-        // Set the default values
-        $scope.currentWeather = {
-            icon: "2.svg",
-            temperature: "?"
-        };
-        
+    function($scope, $interval, $http) {        
         $scope.getCurrentWeather = function() {
             if(WEATHER_API_KEY == "" || CITY_ID == "") {
                 console.log("Weather API Key or City ID not set, exiting...");
@@ -33,16 +27,34 @@ hudApp.controller('currentWeatherController', ['$scope', '$interval', '$http',
                 });
         };
         
-        // Update the current, then update it every 30 minutes thereafter 
+        // Update the current data, then update it every 30 minutes thereafter 
         $scope.getCurrentWeather();                
         $interval( function() { $scope.getCurrentWeather(); }, 1000 * 60 * 30);
     }
 ]);
 
-hudApp.controller('forecastController', function($scope) {            
-    //getforecastWeather();            
-    //setInterval('getforecastWeather()', 1000 * 60 * 60 * 12); // 12 hours
-});
+hudApp.controller('forecastController', ['$scope', '$interval', '$http',
+    function($scope, $interval, $http) {                
+        $scope.getForecastWeather = function() {
+            if(WEATHER_API_KEY == "" || CITY_ID == "") {
+                console.log("Weather API Key or City ID not set, exiting...");
+                return false;
+            }
+
+            $http.get(FORECAST_WEATHER_URL)
+                .success(function(response) {
+                    $scope.forecasts = interpretForecastData(response.list);
+                })
+                .error(function(response) {
+                    console.log("Error retreiving forecast weather data");
+                });
+        };
+        
+        // Update the forecast data, then update it every 12 hours thereafter 
+        $scope.getForecastWeather();                
+        $interval( function() { $scope.getForecastWeather(); }, 1000 * 60 * 60 * 12);
+    }
+]);
 
 hudApp.controller('checklistController', function($scope) {
     
