@@ -29,8 +29,13 @@
             <!-- Todo list starts -->
             <div ng-controller="checklistController" class="col-md-6 col-md-offset-1">
                 <div ng-repeat="item in items.list" class="row">
-                    <div class="col-md-6 checklistItem">{{item[0]}}</div>
-                    <div ng-if="useTwoColumns() && item.length == 2" class="col-md-6 checklistItem">{{item[1]}}</div>
+                    <div ng-if="useTwoColumns()">
+                        <div class="col-md-6 checklistItem">{{item[0]}}</div>
+                        <div ng-if="item.length == 2" class="col-md-6 checklistItem">{{item[1]}}</div>
+                    </div>
+                    <div ng-if="!useTwoColumns()">
+                        <div class="col-md-6 checklistItem">{{item}}</div>
+                    </div>
                 </div>
             </div> 
             <!-- Todo list ends -->
