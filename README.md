@@ -1,7 +1,7 @@
 # Heads Up Display (H.U.D.)
 
 ## Installation
-`npm install angular@1.4.7 bootstrap bootswatch jquery moment --save`
+`npm install angular@1.4.7 bootstrap bootswatch jquery moment --save-dev`
 
 ## Setup
 * Obtain your Habitica API User and Key from [https://habitica.com/#/options/settings/api](Habitica)
