@@ -1,0 +1,25 @@
+{
+  "name": "hud",
+  "version": "2.0.0",
+  "description": "Heads Up Display (H.U.D.)",
+  "author": "Morgan <morgan@morgangass.net>",
+  "private": true,
+  "contributors": [
+    {
+      "name": "Morgan Gass",
+      "email": "morgan@morgangass.net"
+    }
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mdg357/hud/"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "bootstrap": "~3.3.6",
+    "bootswatch": "*",
+    "angular": "~1.4.8",
+    "jquery": "~2.2.0",
+    "moment": "~2.11.1"
+  }
+}
