@@ -157,8 +157,11 @@ hudApp.controller('countdownController', ['$scope', '$interval',
                     + duration.days() + " day" + (duration.days() != 1 ? "s" : "") + ", "
                     + duration.hours() + " hour" + (duration.hours() != 1 ? "s" : "") + ", "
                     + duration.minutes() + " minute" + (duration.minutes() != 1 ? "s" : "");
+                    
+                $scope.businessDays = eventTime.businessDiff(now) + 1;
             } else {
                 $scope.countdown = "";
+                $scope.businessDays = "";
             }
         };
         
