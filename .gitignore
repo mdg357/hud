@@ -1,6 +1,9 @@
 # Custom
 .vscode/
 
+# html directory
+html/*.html
+
 # Logs
 logs
 *.log

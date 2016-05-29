@@ -1,6 +1,6 @@
-var WEATHER_API_KEY = "";
-var HABITICA_USER_KEY = "";
-var HABITICA_API_KEY = "";
+var WEATHER_API_KEY = "e7ae4bbfa549fe91fb0fcb63f97cbd4e";
+var HABITICA_USER_KEY = "b7deaf14-bb0b-4554-9f4d-143f243db6a9";
+var HABITICA_API_KEY = "6a9fb224-546c-4606-9e84-6337a6616711";
 var CITY_ID = "5074472"; // Omaha, NE
 
 var SETTINGS = {
@@ -12,7 +12,7 @@ var SETTINGS = {
     weather_count_index: 1,
     image_path: "assets/images/",
     habitica_task_type: "daily",
-    countdown_end_time: "05/27/2016 10:00:00 PM", //UTC time
+    countdown_end_time: "05/26/2016 10:00:00 PM", //UTC time
     urls: {
         current_weather: "http://api.openweathermap.org/data/2.5/weather?id=" + CITY_ID + "&APPID=" + WEATHER_API_KEY + "&units=imperial",
         forecast_weather: "http://api.openweathermap.org/data/2.5/forecast/city?id=" + CITY_ID + "&APPID=" + WEATHER_API_KEY + "&units=imperial",
@@ -56,8 +56,8 @@ var SETTINGS = {
         fri: "f",
         sat: "s"
     },
-    max_checklist_items: 12,
-    max_checklist_items_per_column: 6
+    max_checklist_items: 16,
+    max_checklist_items_per_column: 8
 };
 
 var WEATHER_ICON_LIST = [

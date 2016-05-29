@@ -140,34 +140,3 @@ hudApp.controller('clockController', ['$scope', '$interval',
     }
 ]);
 
-/// <summary>
-/// Controller for the countdown timer
-/// </summary>
-hudApp.controller('countdownController', ['$scope', '$interval', 
-    function($scope, $interval) {
-        $scope.updateCountdown = function() {
-            var eventTime = moment.utc(SETTINGS.countdown_end_time, "MM/DD/YYYY HH:mm:ss A");
-            var now = moment.utc();
-            var difference = (eventTime - now); // milliseconds
-            
-            if(difference > 0) {
-                var duration = moment.duration(difference, 'milliseconds');
-                
-                $scope.countdown = duration.months() + " month" + (duration.months() != 1 ? "s" : "") + ", "
-                    + duration.days() + " day" + (duration.days() != 1 ? "s" : "") + ", "
-                    + duration.hours() + " hour" + (duration.hours() != 1 ? "s" : "") + ", "
-                    + duration.minutes() + " minute" + (duration.minutes() != 1 ? "s" : "");
-                    
-                $scope.businessDays = eventTime.businessDiff(now) + 1;
-            } else {
-                $scope.countdown = "";
-                $scope.businessDays = "";
-            }
-        };
-        
-        // Update the time, then update it every 1 second thereafter 
-        $scope.updateCountdown();                
-        $interval( function() { $scope.updateCountdown(); }, 
-            SETTINGS.intervals.countdown);
-    }
-]);
