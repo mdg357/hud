@@ -101,7 +101,7 @@ hudApp.controller('checklistController', ['$scope', '$interval', '$http',
                 }
             })
             .success(function(response) {
-                $scope.items = interpretHabitData(response);
+                $scope.items = interpretHabitData(response.data);
             })
             .error(function(response) {
                 console.log(SETTINGS.errors.habitica_http);

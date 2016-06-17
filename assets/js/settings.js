@@ -1,6 +1,6 @@
-var WEATHER_API_KEY = "e7ae4bbfa549fe91fb0fcb63f97cbd4e";
-var HABITICA_USER_KEY = "b7deaf14-bb0b-4554-9f4d-143f243db6a9";
-var HABITICA_API_KEY = "6a9fb224-546c-4606-9e84-6337a6616711";
+var WEATHER_API_KEY = "";
+var HABITICA_USER_KEY = "";
+var HABITICA_API_KEY = "";
 var CITY_ID = "5074472"; // Omaha, NE
 
 var SETTINGS = {
@@ -16,7 +16,7 @@ var SETTINGS = {
     urls: {
         current_weather: "http://api.openweathermap.org/data/2.5/weather?id=" + CITY_ID + "&APPID=" + WEATHER_API_KEY + "&units=imperial",
         forecast_weather: "http://api.openweathermap.org/data/2.5/forecast/city?id=" + CITY_ID + "&APPID=" + WEATHER_API_KEY + "&units=imperial",
-        habitica_tasks: "https://habitica.com/api/v2/user/tasks",
+        habitica_tasks: "https://habitica.com/api/v3/tasks/user",
         sunrise_sunset: ["http://api.sunrise-sunset.org/json?lat=", "&lng=", "&date=today"]
     },
     text: {
