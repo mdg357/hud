@@ -3,7 +3,7 @@ var hudApp = angular.module('hudApp', []);
 /// <summary>
 /// Current weather controller
 /// </summary>
-hudApp.controller('currentWeatherController', ['$scope', '$interval', '$http',
+/*hudApp.controller('currentWeatherController', ['$scope', '$interval', '$http',
     function($scope, $interval, $http) {        
         $scope.getCurrentWeather = function() {
             if(WEATHER_API_KEY == SETTINGS.text.default || CITY_ID == SETTINGS.text.default) {
@@ -138,5 +138,5 @@ hudApp.controller('clockController', ['$scope', '$interval',
         $interval( function() { $scope.updateTime(); }, 
             SETTINGS.intervals.clock);
     }
-]);
+]);*/
 

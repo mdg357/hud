@@ -1,4 +1,44 @@
-<!DOCTYPE html>
+<html>
+    <head lang="en">
+	    <meta charset="UTF-8">
+	    <title>H.U.D.</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="node_modules/bootswatch/darkly/bootstrap.min.css" type="text/css" rel="stylesheet" />    
+        <link rel="shortcut icon" href="favicon.ico?v=1" />
+        <link href="assets/css/styles.css" type="text/css" rel="stylesheet" />
+        <!-- 1. Load libraries -->
+        <!-- Polyfill(s) for older browsers -->
+        <script src="node_modules/core-js/client/shim.min.js"></script>
+        <script src="node_modules/zone.js/dist/zone.js"></script>
+        <script src="node_modules/reflect-metadata/Reflect.js"></script>
+        <script src="node_modules/systemjs/dist/system.src.js"></script>
+        <!-- 2. Configure SystemJS -->
+        <script src="systemjs.config.js"></script>
+        <script>
+            System.import('app').catch(function(err) { 
+                console.error(err); 
+            });
+        </script>
+    </head>
+    <!-- 3. Display the application -->
+    <body>
+        <div class="wrapper container-fluid" ng-app="hudApp">
+            <div class="page-header"></div>
+            <div class="row">
+                <clock-date>Loading date...</clock-date>
+            </div>
+            <div class="row">
+                <clock-time>Loading time...</clock-time>
+            </div>
+        </div>
+        <!--div>Icons made by <a href="http://www.flaticon.com/authors/google" title="Google">
+            Google</a> from <a href="http://www.flaticon.com" title="Flaticon">www.flaticon.com</a> 
+            is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0">CC BY 3.0</a></div> -->
+    </body>
+</html>
+
+
+<!--<!DOCTYPE html>
 <html>
 <head lang="en">
 	<meta charset="UTF-8">
@@ -28,7 +68,7 @@
         <div class="row">
             <div class="row">&nbsp;</div>
             <!-- Todo list starts -->
-            <div ng-controller="checklistController" class="col-md-6 col-md-offset-1">
+            <!--<div ng-controller="checklistController" class="col-md-6 col-md-offset-1">
                 <div ng-repeat="item in items.list" class="row">
                     <div ng-if="useTwoColumns()">
                         <div class="col-md-6 checklistItem">{{item[0]}}</div>
@@ -41,7 +81,7 @@
             </div> 
             <!-- Todo list ends -->
             <!-- Five Day weather starts -->
-            <div ng-controller="forecastController" id="forecast" class="col-md-5">
+            <!--<div ng-controller="forecastController" id="forecast" class="col-md-5">
                 <div ng-repeat="forecast in forecasts" class="row smallText">
                     <div id="day{{$index}}" class="col-md-2 col-md-offset-2">{{forecast.dayText}}</div>
                     <div class="col-md-2 imgHelper">
@@ -52,13 +92,13 @@
                 </div>
             </div>
             <!-- Five Day weather ends -->
-        </div>
+        <!--</div>
     </div>
     <!--div>Icons made by <a href="http://www.flaticon.com/authors/google" title="Google">
         Google</a> from <a href="http://www.flaticon.com" title="Flaticon">www.flaticon.com</a> 
         is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0">CC BY 3.0</a></div> -->
     
-    <script src="node_modules/jquery/dist/jquery.min.js"></script>
+    <!--<script src="node_modules/jquery/dist/jquery.min.js"></script>
     <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="node_modules/moment/min/moment.min.js"></script>
     <script src="assets/js/moment-extensions.js"></script>
@@ -67,4 +107,4 @@
     <script src="assets/js/app.js"></script>
     <script src="assets/js/common.js"></script>
 </body>
-</html>
+</html>-->

@@ -1,7 +1,9 @@
-var WEATHER_API_KEY = "";
-var HABITICA_USER_KEY = "";
-var HABITICA_API_KEY = "";
-var CITY_ID = "5074472"; // Omaha, NE
+/*var keys = {
+    "WEATHER_API_KEY": "",
+    "HABITICA_USER_KEY": "",
+    "HABITICA_API_KEY": "",
+    "CITY_ID": "5074472" // Omaha, NE
+};
 
 var SETTINGS = {
     sunrise_time: null,
@@ -14,8 +16,8 @@ var SETTINGS = {
     habitica_task_type: "daily",
     countdown_end_time: "05/26/2016 10:00:00 PM", //UTC time
     urls: {
-        current_weather: "http://api.openweathermap.org/data/2.5/weather?id=" + CITY_ID + "&APPID=" + WEATHER_API_KEY + "&units=imperial",
-        forecast_weather: "http://api.openweathermap.org/data/2.5/forecast/city?id=" + CITY_ID + "&APPID=" + WEATHER_API_KEY + "&units=imperial",
+        current_weather: "http://api.openweathermap.org/data/2.5/weather?id=" + keys.CITY_ID + "&APPID=" + keys.WEATHER_API_KEY + "&units=imperial",
+        forecast_weather: "http://api.openweathermap.org/data/2.5/forecast/city?id=" + keys.CITY_ID + "&APPID=" + keys.WEATHER_API_KEY + "&units=imperial",
         habitica_tasks: "https://habitica.com/api/v3/tasks/user",
         sunrise_sunset: ["http://api.sunrise-sunset.org/json?lat=", "&lng=", "&date=today"]
     },
@@ -112,3 +114,4 @@ var WEATHER_ICON_LIST = [
     { id: 951, icon: "2.svg", description: "calm" },
     { id: 741, icon: "13.svg", description: "fog" }
 ];
+*/
