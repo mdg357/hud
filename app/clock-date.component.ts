@@ -4,25 +4,25 @@ import * as moment from 'moment';
 
 @Component({
     selector: 'clock-date',
-    template: '<div class="col-md-10 col-md-offset-1" id="dateTime">{{clock.dateTime}}</div>'
+    templateUrl: 'app/clock-date.component.html'
 })
 
 export class ClockDateComponent { 
     componentName: 'ClockDateComponent';
 
-    private dateTimeFormat = "dddd, MMMM D, YYYY";
-    private refreshInterval = 1000;
+    private _dateTimeFormat: string = "dddd, MMMM D, YYYY";
+    private _refreshInterval: number = 1000;
     
     constructor() {
         // Update the time, then update it every 1 second thereafter 
         this.updateTime();
-        let timer = Observable.interval(this.refreshInterval);
+        let timer = Observable.interval(this._refreshInterval);
         timer.subscribe(this.updateTime);
     }
 
     private updateTime = function() {
         this.clock = {
-            dateTime: moment().format(this.dateTimeFormat)
+            dateTime: moment().format(this._dateTimeFormat)
         };
     };
 }

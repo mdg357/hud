@@ -1,0 +1,10 @@
+<div id="forecast" class="col-md-5">
+    <div *ngFor="let forecast of forecasts" class="row smallText">
+        <div id="day{{$index}}" class="col-md-2 col-md-offset-2">{{forecast.dayText}}</div>
+        <div class="col-md-2 imgHelper">
+            <img id="icon{{$index}}" class="smallImg" [src]="forecast.icon" />
+        </div>
+        <div id="max{{$index}}" class="col-md-2 text-right">{{forecast.tempMax}}</div>
+        <div id="min{{$index}}" class="col-md-2 text-right">{{forecast.tempMin}}</div>
+    </div>
+</div>
