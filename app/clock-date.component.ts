@@ -7,12 +7,12 @@ import * as moment from 'moment';
     templateUrl: 'app/clock-date.component.html'
 })
 
-export class ClockDateComponent { 
+export class ClockDateComponent {
     componentName: 'ClockDateComponent';
 
-    private _dateTimeFormat: string = "dddd, MMMM D, YYYY";
+    private _dateTimeFormat: string = 'dddd, MMMM D, YYYY';
     private _refreshInterval: number = 1000;
-    
+
     constructor() {
         // Update the time, then update it every 1 second thereafter 
         this.updateTime();

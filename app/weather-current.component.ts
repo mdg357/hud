@@ -10,7 +10,7 @@ import * as moment from 'moment';
     providers: [WeatherFunctions]
 })
 
-export class WeatherCurrentComponent { 
+export class WeatherCurrentComponent {
     componentName: 'WeatherCurrentComponent';
 
     private _weatherApiKey: string = '';
@@ -25,7 +25,7 @@ export class WeatherCurrentComponent {
     public longitude: string = null;
     public temperature: number = null;
     public icon: string = null;
-    
+
     constructor(private _http: Http, private _weatherFunctions: WeatherFunctions) {
         this.icon = this._weatherFunctions.getWeatherIcon(null, null, null);
 
@@ -36,18 +36,18 @@ export class WeatherCurrentComponent {
     }
 
     private getCurrentWeatherUrl = function() {
-        return 'http://api.openweathermap.org/data/2.5/weather?id=' 
-            + this._cityId + '&APPID=' 
+        return 'http://api.openweathermap.org/data/2.5/weather?id='
+            + this._cityId + '&APPID='
             + this._weatherApiKey + '&units=imperial';
-    }
+    };
 
     private getSunriseSunsetUrl = function(latitude, longitude) {
-        return 'http://api.sunrise-sunset.org/json?lat=' 
+        return 'http://api.sunrise-sunset.org/json?lat='
             + latitude + '&lng=' + longitude + '&date=today';
-    }
+    };
 
     private getCurrentWeather = function() {
-        if(this._weatherApiKey === '' || this._cityId === '') {
+        if (this._weatherApiKey === '' || this._cityId === '') {
             console.log('Weather API Key or City ID not set');
             console.log('Weather API Key: ' + this._weatherApiKey);
             console.log('City Id: ' + this._cityId);
@@ -55,21 +55,21 @@ export class WeatherCurrentComponent {
         }
 
         this._http.get(this.getCurrentWeatherUrl())
-            .map((res:Response) => res.json())
+            .map((res: Response) => res.json())
             .subscribe(
                 data => {
                     this.weatherId = data.weather[0].id;
-                    this.latitude = data.coord.lat;;
-                    this.longitude = data.coord.lon;;
+                    this.latitude = data.coord.lat;
+                    this.longitude = data.coord.lon;
                     this.temperature = Math.round(data.main.temp);
                     this.icon = this._weatherFunctions.getWeatherIcon(data.weather[0].id, null, null);
                 },
                 err => console.error(err)
             );
 
-        if(this.sunriseTime === null || this.sunsetTime === null) {
+        if (this.sunriseTime === null || this.sunsetTime === null) {
             this._http.get(this.getSunriseSunsetUrl(this.latitude, this.longitude))
-                .map((res:Response) => res.json())
+                .map((res: Response) => res.json())
                 .subscribe(
                     data => {
                         this.sunriseTime = data.results.sunrise;

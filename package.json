@@ -21,7 +21,8 @@
     "postinstall": "typings install",
     "tsc": "tsc",
     "tsc:w": "tsc -w",
-    "typings": "typings"
+    "typings": "typings",
+    "lint": "tslint ./app/**/*.ts"
   },
   "dependencies": {
     "@angular/common": "2.0.0",
@@ -42,13 +43,14 @@
     "bootstrap": "^3.3.6",
     "bootswatch": "*",
     "jquery": "^3.1.1",
-    "moment": "^2.15.1",
-    "jasmine": "^2.5.2"
+    "moment": "^2.15.1"
   },
   "devDependencies": {
     "concurrently": "^2.2.0",
     "lite-server": "^2.2.2",
     "typescript": "^2.0.2",
-    "typings":"^1.3.2"
+    "typings":"^1.3.2",
+    "jasmine-core": "^2.5.2",
+    "tslint": "^3.13.0"
   }
 }

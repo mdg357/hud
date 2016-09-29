@@ -10,19 +10,19 @@ import { HabiticaTodoComponent } from './habitica-todo.component';
 
 @NgModule({
     imports: [ BrowserModule, HttpModule ],
-    declarations: [ 
-        ClockDateComponent, 
-        ClockTimeComponent, 
-        WeatherCurrentComponent, 
-        WeatherForecastComponent, 
-        HabiticaTodoComponent 
+    declarations: [
+        ClockDateComponent,
+        ClockTimeComponent,
+        WeatherCurrentComponent,
+        WeatherForecastComponent,
+        HabiticaTodoComponent
     ],
-    bootstrap: [ 
-        ClockDateComponent, 
-        ClockTimeComponent, 
-        WeatherCurrentComponent, 
-        WeatherForecastComponent, 
-        HabiticaTodoComponent 
+    bootstrap: [
+        ClockDateComponent,
+        ClockTimeComponent,
+        WeatherCurrentComponent,
+        WeatherForecastComponent,
+        HabiticaTodoComponent
     ]
 })
 

@@ -7,21 +7,21 @@ import * as moment from 'moment';
     templateUrl: 'app/clock-time.component.html'
 })
 
-export class ClockTimeComponent { 
+export class ClockTimeComponent {
     componentName: 'ClockTimeComponent';
 
     private _refreshInterval: number = 1000;
-    private _hoursAndMinutesFormat: string = "hh:mm";
-    private _secondsFormat: string = "ss";
+    private _hoursAndMinutesFormat: string = 'hh:mm';
+    private _secondsFormat: string = 'ss';
     private _timer: Observable<number>;
 
     public hoursAndMinutes: string;
     public seconds: string;
-    
+
     constructor() {
         // Update the time, then update it every 1 second thereafter 
         this._timer = Observable.timer(0, this._refreshInterval);
-        this._timer.subscribe(t=> {
+        this._timer.subscribe(t => {
             this.updateTime();
         });
     }

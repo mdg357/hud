@@ -10,7 +10,7 @@ import * as moment from 'moment';
     providers: [WeatherFunctions]
 })
 
-export class WeatherForecastComponent { 
+export class WeatherForecastComponent {
     componentName: 'WeatherForecastComponent';
 
     private _weatherApiKey: string = '';
@@ -19,7 +19,7 @@ export class WeatherForecastComponent {
     private _cityId: string = '5074472';
 
     public forecasts: any;
-    
+
     constructor(private _http: Http, private _weatherFunctions: WeatherFunctions) {
         // Update the weather, then update it every 1 second thereafter
         this.getForecastWeather();
@@ -28,12 +28,12 @@ export class WeatherForecastComponent {
     }
 
     private getForecastWeatherUrl = function() {
-        return 'http://api.openweathermap.org/data/2.5/forecast/city?id=' 
+        return 'http://api.openweathermap.org/data/2.5/forecast/city?id='
             + this._cityId + '&APPID=' + this._weatherApiKey + '&units=imperial';
-    }
+    };
 
     private getForecastWeather = function() {
-        if(this._weatherApiKey === '' || this._cityId === '') {
+        if (this._weatherApiKey === '' || this._cityId === '') {
             console.log('Weather API Key or City ID not set');
             console.log('Weather API Key: ' + this._weatherApiKey);
             console.log('City Id: ' + this._cityId);
@@ -41,7 +41,7 @@ export class WeatherForecastComponent {
         }
 
         this._http.get(this.getForecastWeatherUrl())
-            .map((res:Response) => res.json())
+            .map((res: Response) => res.json())
             .subscribe(
                 data => {
                     this.forecasts = this._weatherFunctions.interpretForecastData(data.list);
