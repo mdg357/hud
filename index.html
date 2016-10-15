@@ -1,70 +1,30 @@
-<!DOCTYPE html>
 <html>
-<head lang="en">
-	<meta charset="UTF-8">
-	<title>H.U.D.</title>
-	<link href="node_modules/bootswatch/darkly/bootstrap.min.css" type="text/css" rel="stylesheet" />    
-    <link rel="shortcut icon" href="favicon.ico?v=1" />
-	<link href="assets/css/styles.css" type="text/css" rel="stylesheet" />
-</head>
-<body>
-	<div class="wrapper container-fluid" ng-app="hudApp">
-		<div class="page-header"></div>
-        <div class="row">
-            <div ng-controller="clockController" class="col-md-10 col-md-offset-1" id="dateTime">{{clock.dateTime}}</div>
+    <head lang="en">
+	    <meta charset="UTF-8">
+	    <title>H.U.D.</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="node_modules/bootswatch/darkly/bootstrap.min.css" type="text/css" rel="stylesheet" />    
+        <link rel="shortcut icon" href="favicon.ico?v=1" />
+        <link href="assets/css/styles.css" type="text/css" rel="stylesheet" />
+        <!-- Polyfill(s) for older browsers -->
+        <script src="node_modules/core-js/client/shim.min.js"></script>
+        <script src="node_modules/zone.js/dist/zone.js"></script>
+        <script src="node_modules/reflect-metadata/Reflect.js"></script>
+        <script src="node_modules/systemjs/dist/system.src.js"></script>
+        <script src="systemjs.config.js"></script>
+        <script>
+            System.import('app').catch(function(err) { 
+                console.error(err); 
+            });
+        </script>
+    </head>
+    <body>        
+        <div class="wrapper container-fluid">
+            <div class="page-header"></div>
+            <hud-app></hud-app>
         </div>
-        <div class="row">
-            <div ng-controller="clockController" class="col-md-7">
-                <div class="col-md-3 col-md-offset-1" id="clock">{{clock.hoursAndMinutes}}</div>
-                <div class="col-md-3" id="clockSeconds">{{clock.seconds}}</div>
-            </div>
-            <div ng-controller="currentWeatherController" id="currentWeather" class="col-md-4 col-md-offset-1">
-                <div class="col-md-3">
-                    <img id="currentWeatherIcon" class="largeImg" ng-src="{{currentWeather.icon}}" alt="Weather Icon" />
-                </div>
-                <div id="currentWeatherTemperature" class="col-md-8">{{currentWeather.temperature}} &deg;</div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="row">&nbsp;</div>
-            <!-- Todo list starts -->
-            <div ng-controller="checklistController" class="col-md-6 col-md-offset-1">
-                <div ng-repeat="item in items.list" class="row">
-                    <div ng-if="useTwoColumns()">
-                        <div class="col-md-6 checklistItem">{{item[0]}}</div>
-                        <div ng-if="item.length == 2" class="col-md-6 checklistItem">{{item[1]}}</div>
-                    </div>
-                    <div ng-if="!useTwoColumns()">
-                        <div class="col-md-6 checklistItem">{{item}}</div>
-                    </div>
-                </div>
-            </div> 
-            <!-- Todo list ends -->
-            <!-- Five Day weather starts -->
-            <div ng-controller="forecastController" id="forecast" class="col-md-5">
-                <div ng-repeat="forecast in forecasts" class="row smallText">
-                    <div id="day{{$index}}" class="col-md-2 col-md-offset-2">{{forecast.dayText}}</div>
-                    <div class="col-md-2 imgHelper">
-                        <img id="icon{{$index}}" class="smallImg" ng-src="{{forecast.icon}}" />
-                    </div>
-                    <div id="max{{$index}}" class="col-md-2 text-right">{{forecast.tempMax}}</div>
-                    <div id="min{{$index}}" class="col-md-2 text-right">{{forecast.tempMin}}</div>
-                </div>
-            </div>
-            <!-- Five Day weather ends -->
-        </div>
-    </div>
     <!--div>Icons made by <a href="http://www.flaticon.com/authors/google" title="Google">
         Google</a> from <a href="http://www.flaticon.com" title="Flaticon">www.flaticon.com</a> 
         is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0">CC BY 3.0</a></div> -->
-    
-    <script src="node_modules/jquery/dist/jquery.min.js"></script>
-    <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
-    <script src="node_modules/moment/min/moment.min.js"></script>
-    <script src="assets/js/moment-extensions.js"></script>
-    <script src="assets/js/settings.js"></script>
-    <script src="node_modules/angular/angular.js"></script>
-    <script src="assets/js/app.js"></script>
-    <script src="assets/js/common.js"></script>
-</body>
+    </body>
 </html>

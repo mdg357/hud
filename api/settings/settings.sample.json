@@ -1,0 +1,10 @@
+{
+    "habitica": {
+        "ApiKey": "",
+        "UserId": ""
+    },
+    "weather": {
+        "ApiKey": "",
+        "CityId": ""
+    }
+}

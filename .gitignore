@@ -1,4 +1,16 @@
 # Custom
+# ignore settings.json file
+api/settings/settings.json
+
+# Angular 2
+typings
+app/**/*.js
+app/**/*.map
+node_modules
+jspm_packages
+bower_components
+
+# Custom
 .vscode/
 
 # html directory
