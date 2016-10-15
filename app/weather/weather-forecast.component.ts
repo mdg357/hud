@@ -1,27 +1,49 @@
-import { Component, Input, Injectable } from '@angular/core';
+import { Component, Input, Injectable, OnInit } from '@angular/core';
 import { Http, Response } from '@angular/http';
 import { WeatherFunctions } from './weather-functions.component';
 import { Observable } from 'rxjs/Rx';
+
+import { SettingsService } from '../services/settings.service';
 import * as moment from 'moment';
 
 @Component({
     selector: 'weather-forecast',
-    templateUrl: 'app/weather-forecast.component.html',
+    templateUrl: 'app/weather/weather-forecast.component.html',
     providers: [WeatherFunctions]
 })
 
 export class WeatherForecastComponent {
     componentName: 'WeatherForecastComponent';
 
-    private _weatherApiKey: string = '';
-
     private _refreshInterval: number = 1000 * 60 * 60 * 12; // 12 hours
-    private _cityId: string = '5074472';
+    private _weatherSettings: any = null;
 
     public forecasts: any;
+    public errorMessage: any = null;
 
-    constructor(private _http: Http, private _weatherFunctions: WeatherFunctions) {
-        // Update the weather, then update it every 1 second thereafter
+    constructor(private _http: Http, 
+        private _weatherFunctions: WeatherFunctions, 
+        private _settingsService: SettingsService) {        
+    }
+
+    ngOnInit() {
+        if (!this._weatherSettings) {
+            this.getApiSettings();
+        }
+    }
+
+    private getApiSettings() {
+        this._settingsService.getWeatherSettings()
+            .subscribe(
+                settings => this.setupTimer(settings),
+                error => this.errorMessage = <any>error);
+    }
+
+    private setupTimer (settings: string[])
+    {
+        this._weatherSettings = settings;
+
+        // Update the weather forecast, then update it every 12 hours thereafter
         this.getForecastWeather();
         let timer = Observable.interval(this._refreshInterval);
         timer.subscribe(this.getForecastWeather);
@@ -29,14 +51,13 @@ export class WeatherForecastComponent {
 
     private getForecastWeatherUrl = function() {
         return 'http://api.openweathermap.org/data/2.5/forecast/city?id='
-            + this._cityId + '&APPID=' + this._weatherApiKey + '&units=imperial';
+            + this._weatherSettings.CityId + '&APPID=' 
+            + this._weatherSettings.ApiKey + '&units=imperial';
     };
 
     private getForecastWeather = function() {
-        if (this._weatherApiKey === '' || this._cityId === '') {
+        if (!this._weatherSettings) {
             console.log('Weather API Key or City ID not set');
-            console.log('Weather API Key: ' + this._weatherApiKey);
-            console.log('City Id: ' + this._cityId);
             return false;
         }
 

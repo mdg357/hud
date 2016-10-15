@@ -1,5 +1,10 @@
 {
-    "habiticaApiKey": " ",
-    "habiticaUserId": "",
-    "weatherApiKey": ""
+    "habitica": {
+        "ApiKey": "",
+        "UserId": ""
+    },
+    "weather": {
+        "ApiKey": "",
+        "CityId": ""
+    }
 }

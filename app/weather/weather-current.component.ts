@@ -1,22 +1,22 @@
-import { Component, Input, Injectable } from '@angular/core';
+import { Component, Input, Injectable, OnInit } from '@angular/core';
 import { Http, Response } from '@angular/http';
 import { WeatherFunctions } from './weather-functions.component';
 import { Observable } from 'rxjs/Rx';
+
+import { SettingsService } from '../services/settings.service';
 import * as moment from 'moment';
 
 @Component({
     selector: 'weather-current',
-    templateUrl: 'app/weather-current.component.html',
+    templateUrl: 'app/weather/weather-current.component.html',
     providers: [WeatherFunctions]
 })
 
 export class WeatherCurrentComponent {
     componentName: 'WeatherCurrentComponent';
 
-    private _weatherApiKey: string = '';
-
     private _refreshInterval: number = 1000 * 60 * 30; // 30 minutes;
-    private _cityId: string = '5074472';
+    private _weatherSettings: any = null;
 
     public sunriseTime: string = null;
     public sunsetTime: string = null;
@@ -25,32 +25,51 @@ export class WeatherCurrentComponent {
     public longitude: string = null;
     public temperature: number = null;
     public icon: string = null;
+    public errorMessage: any = null;
 
-    constructor(private _http: Http, private _weatherFunctions: WeatherFunctions) {
-        this.icon = this._weatherFunctions.getWeatherIcon(null, null, null);
+    constructor(private _http: Http, 
+        private _weatherFunctions: WeatherFunctions, 
+        private _settingsService: SettingsService) {
+        this.icon = this._weatherFunctions.getWeatherIcon(null, null, null);        
+    }
 
-        // Update the weather, then update it every 1 second thereafter
+    ngOnInit() {
+        if (!this._weatherSettings) {
+            this.getApiSettings();
+        }
+    }
+
+    private getApiSettings() {
+        this._settingsService.getWeatherSettings()
+            .subscribe(
+                settings => this.setupTimer(settings),
+                error => this.errorMessage = <any>error);
+    }
+
+    private setupTimer (settings: string[])
+    {
+        this._weatherSettings = settings;
+
+        // Update the current weather, then update it every 30 minutes thereafter
         this.getCurrentWeather();
         let timer = Observable.interval(this._refreshInterval);
         timer.subscribe(this.getCurrentWeather);
     }
 
-    private getCurrentWeatherUrl = function() {
+    private getCurrentWeatherUrl() {
         return 'http://api.openweathermap.org/data/2.5/weather?id='
-            + this._cityId + '&APPID='
-            + this._weatherApiKey + '&units=imperial';
+            + this._weatherSettings.CityId + '&APPID='
+            + this._weatherSettings.ApiKey + '&units=imperial';
     };
 
-    private getSunriseSunsetUrl = function(latitude, longitude) {
+    private getSunriseSunsetUrl(latitude, longitude) {
         return 'http://api.sunrise-sunset.org/json?lat='
             + latitude + '&lng=' + longitude + '&date=today';
     };
 
-    private getCurrentWeather = function() {
-        if (this._weatherApiKey === '' || this._cityId === '') {
+    private getCurrentWeather() {
+        if (!this._weatherSettings) {
             console.log('Weather API Key or City ID not set');
-            console.log('Weather API Key: ' + this._weatherApiKey);
-            console.log('City Id: ' + this._cityId);
             return false;
         }
 

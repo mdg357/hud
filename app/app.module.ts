@@ -2,28 +2,23 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpModule } from '@angular/http';
 
-import { ClockDateComponent } from './clock-date.component';
-import { ClockTimeComponent } from './clock-time.component';
-import { WeatherCurrentComponent } from './weather-current.component';
-import { WeatherForecastComponent } from './weather-forecast.component';
-import { HabiticaTodoComponent } from './habitica-todo.component';
+import { AppComponent } from './app.component';
+import { ClockTimeComponent } from './clock/clock-time.component';
+import { ClockDateComponent } from './clock/clock-date.component';
+import { WeatherForecastComponent } from './weather/weather-forecast.component';
+import { WeatherCurrentComponent } from './weather/weather-current.component';
+import { HabiticaTodoComponent } from './habitica/habitica-todo.component';
 
 @NgModule({
     imports: [ BrowserModule, HttpModule ],
-    declarations: [
-        ClockDateComponent,
-        ClockTimeComponent,
+    declarations: [ 
+        AppComponent, 
+        ClockTimeComponent, 
+        ClockDateComponent, 
+        WeatherForecastComponent, 
         WeatherCurrentComponent,
-        WeatherForecastComponent,
-        HabiticaTodoComponent
-    ],
-    bootstrap: [
-        ClockDateComponent,
-        ClockTimeComponent,
-        WeatherCurrentComponent,
-        WeatherForecastComponent,
-        HabiticaTodoComponent
-    ]
+        HabiticaTodoComponent ],
+    bootstrap: [ AppComponent ]
 })
 
 export class AppModule { }

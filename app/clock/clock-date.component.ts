@@ -4,7 +4,7 @@ import * as moment from 'moment';
 
 @Component({
     selector: 'clock-date',
-    templateUrl: 'app/clock-date.component.html'
+    templateUrl: 'app/clock/clock-date.component.html'
 })
 
 export class ClockDateComponent {
