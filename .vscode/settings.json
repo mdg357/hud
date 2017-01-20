@@ -1,0 +1,22 @@
+// Place your settings in this file to overwrite default and user settings.
+{
+    "editor.detectIndentation": false,
+    "files.exclude": {
+        //"node_modules" : true,
+        //"jspm_packages" : true,
+        "**/*.js": {
+            "when": "$(basename).ts"
+        },
+        "**/*.js.map": {
+            "when": "$(basename)"
+        },
+        "**/*.css": {
+          "when": "$(basename).less"
+        },
+        "**/*.min.css": {
+          "when": "$(basename).css"
+        }
+    }
+,
+"typescript.tsdk": "./node_modules/typescript/lib"
+}

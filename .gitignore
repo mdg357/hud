@@ -10,9 +10,6 @@ node_modules
 jspm_packages
 bower_components
 
-# Custom
-.vscode/
-
 # html directory
 html/*.html
 
