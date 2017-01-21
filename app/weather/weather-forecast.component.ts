@@ -21,9 +21,9 @@ export class WeatherForecastComponent {
     public forecasts: any;
     public errorMessage: any = null;
 
-    constructor(private _http: Http, 
-        private _weatherFunctions: WeatherFunctions, 
-        private _settingsService: SettingsService) {        
+    constructor(private _http: Http,
+        private _weatherFunctions: WeatherFunctions,
+        private _settingsService: SettingsService) {
     }
 
     ngOnInit() {
@@ -39,19 +39,18 @@ export class WeatherForecastComponent {
                 error => this.errorMessage = <any>error);
     }
 
-    private setupTimer (settings: string[])
-    {
+    private setupTimer (settings: string[]) {
         this._weatherSettings = settings;
 
         // Update the weather forecast, then update it every 12 hours thereafter
         this.getForecastWeather();
         let timer = Observable.interval(this._refreshInterval);
-        timer.subscribe(this.getForecastWeather);
+        timer.subscribe(data => this.getForecastWeather());
     }
 
     private getForecastWeatherUrl = function() {
         return 'http://api.openweathermap.org/data/2.5/forecast/city?id='
-            + this._weatherSettings.CityId + '&APPID=' 
+            + this._weatherSettings.CityId + '&APPID='
             + this._weatherSettings.ApiKey + '&units=imperial';
     };
 

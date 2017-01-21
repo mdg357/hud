@@ -11,14 +11,14 @@ export class SettingsService {
     public getHabiticaSettings(): Observable<string[]> {
         return this._http.get(this._settingsUrl)
             .map((response: Response) => <string[]> response.json().habitica)
-            //.do(data => console.log('All: ' +  JSON.stringify(data)))
+            // .do(data => console.log('All: ' +  JSON.stringify(data)))
             .catch(this.handleError);
     }
 
     public getWeatherSettings(): Observable<string[]> {
         return this._http.get(this._settingsUrl)
             .map((response: Response) => <string[]> response.json().weather)
-            //.do(data => console.log('All: ' +  JSON.stringify(data)))
+            // .do(data => console.log('All: ' +  JSON.stringify(data)))
             .catch(this.handleError);
     }
 

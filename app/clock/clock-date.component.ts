@@ -15,12 +15,12 @@ export class ClockDateComponent {
 
     constructor() {
         // Update the time, then update it every 1 second thereafter 
-        this.updateTime();
+        this.updateDate();
         let timer = Observable.interval(this._refreshInterval);
-        timer.subscribe(this.updateTime);
+        timer.subscribe(data => this.updateDate());
     }
 
-    private updateTime = function() {
+    private updateDate = function() {
         this.clock = {
             dateTime: moment().format(this._dateTimeFormat)
         };

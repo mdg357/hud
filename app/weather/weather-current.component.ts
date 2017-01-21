@@ -27,10 +27,10 @@ export class WeatherCurrentComponent {
     public icon: string = null;
     public errorMessage: any = null;
 
-    constructor(private _http: Http, 
-        private _weatherFunctions: WeatherFunctions, 
+    constructor(private _http: Http,
+        private _weatherFunctions: WeatherFunctions,
         private _settingsService: SettingsService) {
-        this.icon = this._weatherFunctions.getWeatherIcon(null, null, null);        
+        this.icon = this._weatherFunctions.getWeatherIcon(null, null, null);
     }
 
     ngOnInit() {
@@ -46,8 +46,7 @@ export class WeatherCurrentComponent {
                 error => this.errorMessage = <any>error);
     }
 
-    private setupTimer (settings: string[])
-    {
+    private setupTimer (settings: string[]) {
         this._weatherSettings = settings;
 
         // Update the current weather, then update it every 30 minutes thereafter

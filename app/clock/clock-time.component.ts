@@ -21,9 +21,7 @@ export class ClockTimeComponent {
     constructor() {
         // Update the time, then update it every 1 second thereafter 
         this._timer = Observable.timer(0, this._refreshInterval);
-        this._timer.subscribe(t => {
-            this.updateTime();
-        });
+        this._timer.subscribe(data => this.updateTime());
     }
 
     private updateTime = function() {

@@ -7,29 +7,9 @@ import { SettingsService } from './services/settings.service';
 
 @Component({
     selector: 'hud-app',
-    template: `
-        <div class="row">
-            <clock-date>Loading date...</clock-date>
-        </div>
-        <div class="row">
-            <div class="col-md-7">
-                <clock-time>Loading time...</clock-time>
-            </div>
-            <div id="currentWeather" class="col-md-4 col-md-offset-1">
-                <weather-current>Loading current weather...</weather-current>
-            </div>
-        </div>
-        <div class="row">
-            <div class="row">&nbsp;</div>
-            <div class="col-md-6 col-md-offset-1">
-                <habitica-todo>Loading Habitica tasks...</habitica-todo>
-            </div> 
-            <weather-forecast>Loading forecast weather...</weather-forecast>
-        </div>
-    `,
+    templateUrl: './app/app.component.html',
     providers: [ SettingsService ]
 })
 
 export class AppComponent {
-
 }

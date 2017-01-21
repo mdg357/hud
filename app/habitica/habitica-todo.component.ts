@@ -29,7 +29,7 @@ export class HabiticaTodoComponent {
         list: []
     };
 
-    constructor(private _http: Http, 
+    constructor(private _http: Http,
         private _settingsService: SettingsService) {
     }
 
@@ -43,17 +43,16 @@ export class HabiticaTodoComponent {
         this._settingsService.getHabiticaSettings()
             .subscribe(
                 settings => this.setupTimer(settings),
-                error => this.errorMessage = <any>error);
+                error => this.errorMessage = error);
     }
 
-    private setupTimer (settings: string[])
-    {
+    private setupTimer (settings: string[]) {
         this._habiticaSettings = settings;
 
         // Update the tasks, then update it every 30 minutes thereafter
         this.getHabiticaTasks();
         let timer = Observable.interval(this._refreshInterval);
-        timer.subscribe(this.getHabiticaTasks);
+        timer.subscribe(data => this.getHabiticaTasks());
     }
 
     private getHabiticaTasks () {
