@@ -1,10 +1,9 @@
-import { Component, Input, Injectable, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Http, Response } from '@angular/http';
 import { WeatherFunctions } from './weather-functions.component';
 import { Observable } from 'rxjs/Rx';
 
 import { SettingsService } from '../services/settings.service';
-import * as moment from 'moment';
 
 @Component({
     selector: 'weather-forecast',
@@ -48,13 +47,13 @@ export class WeatherForecastComponent {
         timer.subscribe(data => this.getForecastWeather());
     }
 
-    private getForecastWeatherUrl = function() {
+    private getForecastWeatherUrl(): string {
         return 'http://api.openweathermap.org/data/2.5/forecast/city?id='
             + this._weatherSettings.CityId + '&APPID='
             + this._weatherSettings.ApiKey + '&units=imperial';
     };
 
-    private getForecastWeather = function() {
+    private getForecastWeather() {
         if (!this._weatherSettings) {
             console.log('Weather API Key or City ID not set');
             return false;

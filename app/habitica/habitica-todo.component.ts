@@ -1,4 +1,4 @@
-import { Component, Input, Injectable, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Http, Headers, Response } from '@angular/http';
 import { Observable } from 'rxjs/Rx';
 

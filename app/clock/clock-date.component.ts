@@ -13,6 +13,8 @@ export class ClockDateComponent {
     private _dateTimeFormat: string = 'dddd, MMMM D, YYYY';
     private _refreshInterval: number = 1000;
 
+    public dateTime: string;
+
     constructor() {
         // Update the time, then update it every 1 second thereafter 
         this.updateDate();
@@ -20,9 +22,7 @@ export class ClockDateComponent {
         timer.subscribe(data => this.updateDate());
     }
 
-    private updateDate = function() {
-        this.clock = {
-            dateTime: moment().format(this._dateTimeFormat)
-        };
+    private updateDate() {
+        this.dateTime = moment().format(this._dateTimeFormat);
     };
 }

@@ -24,7 +24,7 @@ export class ClockTimeComponent {
         this._timer.subscribe(data => this.updateTime());
     }
 
-    private updateTime = function() {
+    private updateTime() {
         this.hoursAndMinutes = moment().format(this._hoursAndMinutesFormat);
         this.seconds = moment().format(this._secondsFormat);
     };

@@ -1,10 +1,9 @@
-import { Component, Input, Injectable, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Http, Response } from '@angular/http';
 import { WeatherFunctions } from './weather-functions.component';
 import { Observable } from 'rxjs/Rx';
 
 import { SettingsService } from '../services/settings.service';
-import * as moment from 'moment';
 
 @Component({
     selector: 'weather-current',
