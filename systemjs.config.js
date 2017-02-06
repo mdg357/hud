@@ -6,6 +6,7 @@
   System.config({
     paths: {
       // paths serve as alias
+      'hud:': 'app/',
       'npm:': 'node_modules/',
       'moment': 'node_modules/moment/min/moment.min.js',
       'settings': 'assets/js/settings.js',

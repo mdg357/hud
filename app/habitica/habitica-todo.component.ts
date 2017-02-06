@@ -46,6 +46,8 @@ export class HabiticaTodoComponent {
                 error => this.errorMessage = error);
     }
 
+    // TODO: add return types
+    // TODO: add parameter types
     private setupTimer (settings: string[]) {
         this._habiticaSettings = settings;
 
@@ -55,6 +57,8 @@ export class HabiticaTodoComponent {
         timer.subscribe(data => this.getHabiticaTasks());
     }
 
+    // TODO: add return types
+    // TODO: add parameter types
     private getHabiticaTasks () {
         if (!this._habiticaSettings) {
             console.log('Habitica API Key or User ID not set');
@@ -75,6 +79,8 @@ export class HabiticaTodoComponent {
             );
     };
 
+    // TODO: add return types
+    // TODO: add parameter types
     private interpretHabitData(habitData) {
         let day = moment().format('ddd').toLowerCase();
         let shortDay = this._shortDateStrings[day];
@@ -112,6 +118,8 @@ export class HabiticaTodoComponent {
         };
     };
 
+    // TODO: add return types
+    // TODO: add parameter types
     public useTwoColumns() {
         return (this.items.totalItems > this._maxTodoItemsPerColumn);
     };

@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { Http, Response } from '@angular/http';
-import { WeatherFunctions } from './weather-functions.component';
 import { Observable } from 'rxjs/Rx';
+
+import { WeatherFunctions } from './weather-functions.component';
 
 import { SettingsService } from '../services/settings.service';
 
@@ -54,17 +55,23 @@ export class WeatherCurrentComponent {
         timer.subscribe(this.getCurrentWeather);
     }
 
+    // TODO: add return types
+    // TODO: add parameter types
     private getCurrentWeatherUrl() {
         return 'http://api.openweathermap.org/data/2.5/weather?id='
             + this._weatherSettings.CityId + '&APPID='
             + this._weatherSettings.ApiKey + '&units=imperial';
     };
 
+    // TODO: add return types
+    // TODO: add parameter types
     private getSunriseSunsetUrl(latitude, longitude) {
         return 'http://api.sunrise-sunset.org/json?lat='
             + latitude + '&lng=' + longitude + '&date=today';
     };
 
+    // TODO: add return types
+    // TODO: add parameter types
     private getCurrentWeather() {
         if (!this._weatherSettings) {
             console.log('Weather API Key or City ID not set');

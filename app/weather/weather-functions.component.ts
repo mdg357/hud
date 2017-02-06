@@ -60,6 +60,8 @@ export class WeatherFunctions {
         { id: 741, icon: '13.svg', description: 'fog' }
     ];
 
+    // TODO: add return types
+    // TODO: add parameter types
     /// <summary>
     /// Get the weather icon based on the id and the time of day
     /// </summary>
@@ -88,6 +90,8 @@ export class WeatherFunctions {
         return icon;
     };
 
+    // TODO: add return types
+    // TODO: add parameter types
     /// <summary>
     /// Check if the current time is between sunrise and sunset
     /// </summary>
@@ -103,6 +107,9 @@ export class WeatherFunctions {
         return true;
     };
 
+    // TODO: add return types
+    // TODO: add parameter types
+    // TODO: create DTO for day list and weather data
     /// <summary>
     /// Analyze and transform the forecast data from the web service.
     /// </summary>
@@ -147,6 +154,7 @@ export class WeatherFunctions {
             let weatherType = element.weather[0].id;
             let index = null;
 
+            // TODO: make this a function or something
             // Try to locate the index for the given date
             switch (date) {
                 case dayList[0]: index = 0; break;
@@ -183,6 +191,7 @@ export class WeatherFunctions {
             }
         });
 
+        // TODO: try to refactor this into something more readable
         // Once the forecast array is populate, go through it again to find the 
         // temperatures and the most prevalent weather condition
         forecasts.forEach(function(element) {
