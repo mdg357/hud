@@ -1,4 +1,11 @@
-# Hud
+# Heads Up Display (H.U.D.)
+
+## Setup
+* Obtain your Habitica API User and Key from [https://habitica.com/#/options/settings/api](Habitica)
+* Obtain your Open Weather Map API key from [http://home.openweathermap.org/](OpenWeatherMap)
+* You will also need to locate your City's ID from OpenWeatherMap as described [http://openweathermap.org/current#cityid](here)
+
+All four of these values of these will go into the `setting.json` located under `api/settings/`. A sample of the settings file is provided in the form of the file `settings.sample.json`.
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.0.0-rc.0.
 
