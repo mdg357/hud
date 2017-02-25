@@ -1,6 +1,6 @@
 # Custom
 # ignore settings.json file
-api/settings/settings.json
+src/api/settings/settings.json
 
 # Angular 2
 typings
