@@ -1,0 +1,10 @@
+{
+    "habitica": {
+        "ApiKey": "6a9fb224-546c-4606-9e84-6337a6616711",
+        "UserId": "b7deaf14-bb0b-4554-9f4d-143f243db6a9"
+    },
+    "weather": {
+        "ApiKey": "e7ae4bbfa549fe91fb0fcb63f97cbd4e",
+        "CityId": "5074472"
+    }
+}

@@ -7,7 +7,7 @@ import { SettingsService } from '../services/settings.service';
 
 @Component({
     selector: 'habitica-todo',
-    templateUrl: 'app/habitica/habitica-todo.component.html'
+    templateUrl: './habitica-todo.component.html'
 })
 
 export class HabiticaTodoComponent {

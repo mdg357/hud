@@ -4,22 +4,22 @@ import * as moment from 'moment';
 
 @Component({
     selector: 'clock-time',
-    templateUrl: 'app/clock/clock-time.component.html'
+    templateUrl: './clock-time.component.html'
 })
 
 export class ClockTimeComponent {
     componentName: 'ClockTimeComponent';
 
-    private _refreshInterval: number = 1000;
-    private _hoursAndMinutesFormat: string = 'hh:mm';
-    private _secondsFormat: string = 'ss';
+    private _refreshInterval = 1000;
+    private _hoursAndMinutesFormat = 'hh:mm';
+    private _secondsFormat = 'ss';
     private _timer: Observable<number>;
 
     public hoursAndMinutes: string;
     public seconds: string;
 
     constructor() {
-        // Update the time, then update it every 1 second thereafter 
+        // Update the time, then update it every 1 second thereafter
         this._timer = Observable.timer(0, this._refreshInterval);
         this._timer.subscribe(data => this.updateTime());
     }

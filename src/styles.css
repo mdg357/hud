@@ -1,3 +1,4 @@
+/* You can add global styles to this file, and also import other style files */
 html body {
     background-color: black;
 }
@@ -44,7 +45,7 @@ img {
 }
 
 .checklistItem {
-    background-image: url('../images/checkbox.png');
+    background-image: url('/assets/images/checkbox.png');
     background-size: 30px 30px;
     background-repeat: no-repeat;
     background-position: left;

@@ -4,19 +4,19 @@ import * as moment from 'moment';
 
 @Component({
     selector: 'clock-date',
-    templateUrl: 'app/clock/clock-date.component.html'
+    templateUrl: './clock-date.component.html'
 })
 
 export class ClockDateComponent {
     componentName: 'ClockDateComponent';
 
-    private _dateTimeFormat: string = 'dddd, MMMM D, YYYY';
-    private _refreshInterval: number = 1000;
+    private _dateTimeFormat = 'dddd, MMMM D, YYYY';
+    private _refreshInterval = 1000;
 
     public dateTime: string;
 
     constructor() {
-        // Update the time, then update it every 1 second thereafter 
+        // Update the time, then update it every 1 second thereafter
         this.updateDate();
         let timer = Observable.interval(this._refreshInterval);
         timer.subscribe(data => this.updateDate());

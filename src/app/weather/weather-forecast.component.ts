@@ -7,7 +7,7 @@ import { SettingsService } from '../services/settings.service';
 
 @Component({
     selector: 'weather-forecast',
-    templateUrl: 'app/weather/weather-forecast.component.html',
+    templateUrl: './weather-forecast.component.html',
     providers: [WeatherFunctions]
 })
 
