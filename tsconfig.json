@@ -1,18 +1,16 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "baseUrl": "./",
+    "target": "es5",
+    "module": "es2015",
     "outDir": "./dist/out-tsc",
     "sourceMap": true,
     "declaration": false,
     "moduleResolution": "node",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "paths": {
-        "hud:*": ["app/*"]
-    },
     "lib": [
-      "es2016"
+      "es2015"
     ]
   }
 }

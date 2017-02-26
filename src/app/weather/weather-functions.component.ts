@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 
 import * as moment from 'moment';
 
+import { ForecastDto } from '../dtos/forecast.dto';
+
 @Injectable()
 export class WeatherFunctions {
     private _defaultWeatherIconIdDay = 0;
@@ -65,13 +67,13 @@ export class WeatherFunctions {
     /// </summary>
     /// <param name=""></param>
     /// <returns></returns>
-    public getWeatherIcon = function(id, sunriseTime, sunsetTime) {
+    public getWeatherIcon(id: number, sunriseTime: string, sunsetTime: string) {
         let defaultIconIndex = (this.isDayTime(sunriseTime, sunsetTime) ? this._defaultWeatherIconIdDay : this._defaultWeatherIconIdNight);
         let icon = this._imagePath + this._weatherIconList[defaultIconIndex].icon;
         let description = this._weatherIconList[defaultIconIndex].description;
         let imagePath = 'assets/images/';
 
-        if (id === undefined || id === null) {
+        if (id === null) {
             return icon;
         }
 
@@ -93,7 +95,7 @@ export class WeatherFunctions {
     /// </summary>
     /// <param name=""></param>
     /// <returns>True, if it is currently daytime, False otherwise</returns>
-    public isDayTime = function(sunriseTime, sunsetTime) {
+    public isDayTime(sunriseTime: string, sunsetTime: string): boolean {
         if (sunriseTime !== null && sunsetTime !== null) {
             let formatting = 'h:mm:ss A';
 
@@ -103,129 +105,62 @@ export class WeatherFunctions {
         return true;
     };
 
+    public setupForecasts(dateFormat: string, defaultText: string, threeLetterDayFormat: string): ForecastDto[] {
+      let forecasts = new Array<ForecastDto>();
+
+      for (let i = 1; i <= 5; ++i) {
+            let date = moment().add(i, 'days').format(dateFormat);
+            let dayText = moment(date, dateFormat).format(threeLetterDayFormat);
+            let forecast = new ForecastDto(date, dayText, defaultText);
+            forecasts.push(forecast);
+      }
+
+      return forecasts;
+    }
+
+    public setupDayList(dateFormat: string): string[] {
+      let dayList = new Array<string>();
+
+      for (let i = 1; i <= 5; ++i) {
+            let date = moment().add(i, 'days').format(dateFormat);
+            dayList.push(date);
+      }
+
+      return dayList;
+    }
+
+    public getDayIndex(date: string, dayList: string[]): number {
+      return dayList.indexOf(date) !== -1
+        ? dayList.indexOf(date)
+        : null;
+    }
+
     /// <summary>
     /// Analyze and transform the forecast data from the web service.
     /// </summary>
     /// <param name="forecastData">The data to analyze</param>
     /// <returns></returns>
-    public interpretForecastData = function(forecastData) {
+    public interpretForecastData(forecastData): ForecastDto[] {
         let defaultText = '';
         let unknownText = '?';
         let dateFormat = 'MM/DD/YYYY';
         let unixFormat = 'X';
         let threeLetterDayFormat = 'ddd';
-        let weatherTypeIndex = 0;
-        let weatherCountIndex = 1;
-        let forecasts = [];
-        let dayList = [];
-        let self = this;
-
-        // Create the empty objects for each of the dates we need
-        for (let i = 1; i <= 5; ++i) {
-            let dateString = moment().add(i, 'days').format(dateFormat);
-            let value = {
-                date: dateString,
-                dayText: defaultText,
-                tempMinArr: [],
-                tempMaxArr: [],
-                tempMin: undefined,
-                tempMax: undefined,
-                weatherTypes: [],
-                icon: defaultText,
-                weatherId: defaultText
-            };
-            forecasts.push(value);
-            dayList.push(dateString);
-        }
+        let forecasts = this.setupForecasts(dateFormat, defaultText, threeLetterDayFormat);
+        let dayList = this.setupDayList(dateFormat);
 
         // Locate the minimum temps, maximum temps, and types of weather
-        forecastData.forEach(function(element) {
+        forecastData.forEach((element) => {
             let date = moment.utc(element.dt, unixFormat).format(dateFormat);
-            let dayText = moment(date, dateFormat).format(threeLetterDayFormat);
-            let tempMin = element.main.temp_min;
-            let tempMax = element.main.temp_max;
-            let weatherType = element.weather[0].id;
-            let index = null;
-
-            // Try to locate the index for the given date
-            switch (date) {
-                case dayList[0]: index = 0; break;
-                case dayList[1]: index = 1; break;
-                case dayList[2]: index = 2; break;
-                case dayList[3]: index = 3; break;
-                case dayList[4]: index = 4; break;
-            }
+            let index = this.getDayIndex(date, dayList);
 
             // If an index was found, populate the object
-            if (index != null) {
-                let entry = forecasts[index];
-                entry.dayText = dayText;
-                entry.tempMinArr.push(tempMin);
-                entry.tempMaxArr.push(tempMax);
-
-                // If the weather array is empty, add a new entry
-                if (entry.weatherTypes.length === 0) {
-                    entry.weatherTypes.push([weatherType, 1]);
-                } else { // Otherwise, see if the entry already exists in the array
-                    let valueFound = false;
-                    entry.weatherTypes.forEach((item) => {
-                        if (item[weatherTypeIndex] === weatherType) {
-                            item[weatherCountIndex] += 1;
-                            valueFound = true;
-                        }
-                    });
-
-                    // If no entry was found, add a new one
-                    if (!valueFound) {
-                        entry.weatherTypes.push([weatherType, 1]);
-                    }
-                }
-            }
-        });
-
-        // Once the forecast array is populate, go through it again to find the
-        // temperatures and the most prevalent weather condition
-        forecasts.forEach((element) => {
-            // Locate the minimum and maximum temperatures
-            for (let i = 0; i < element.tempMinArr.length; ++i) {
-                if (element.tempMin === undefined || element.tempMinArr[i] < element.tempMin) {
-                    element.tempMin = element.tempMinArr[i];
-                }
-            }
-
-            for (let i = 0; i < element.tempMaxArr.length; ++i) {
-                if (element.tempMax === undefined || element.tempMaxArr[i] > element.tempMax) {
-                    element.tempMax = element.tempMaxArr[i];
-                }
-            }
-
-            // Round the value if it exists
-            if (element.tempMin !== undefined) {
-                element.tempMin = Math.round(element.tempMin);
-            } else {
-                element.tempMin = unknownText;
-            }
-
-            if (element.tempMax !== undefined) {
-                element.tempMax = Math.round(element.tempMax);
-            } else {
-                element.tempMax = unknownText;
-            }
-
-            let mostPrevalentCount = undefined;
-            let mostPrevalentIndex = undefined;
-            // Find the most prevalent weather condition
-            for (let i = 0; i < element.weatherTypes.length; ++i) {
-                if (mostPrevalentCount === undefined ||
-                    (mostPrevalentCount !== undefined && element.weatherTypes[i][weatherCountIndex] > mostPrevalentCount)) {
-                    mostPrevalentIndex = i;
-                    mostPrevalentCount = element.weatherTypes[i][weatherCountIndex];
-                }
-            }
-
-            if (mostPrevalentIndex !== undefined) {
-                element.weatherId = element.weatherTypes[mostPrevalentIndex][weatherTypeIndex];
-                element.icon = self.getWeatherIcon(element.weatherId, null, null);
+            if (index !== null) {
+              let entry = forecasts[index];
+              entry.AddMinimumTemperatures(element.main.temp_min);
+              entry.AddMaximumTemperatures(element.main.temp_max);
+              entry.AddWeatherType(element.weather[0].id);
+              entry.icon = this.getWeatherIcon(entry.weatherId, null, null);
             }
         });
 

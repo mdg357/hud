@@ -2,6 +2,9 @@
 # ignore settings.json file
 src/api/settings/settings.json
 
+# ignore dist folder
+dist
+
 # Angular 2
 typings
 app/**/*.js

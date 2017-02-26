@@ -48,7 +48,7 @@ export class WeatherForecastComponent implements OnInit {
     }
 
     private getForecastWeatherUrl(): string {
-        return 'http://api.openweathermap.org/data/2.5/forecast/city?id='
+        return 'http://api.openweathermap.org/data/2.5/forecast?id='
             + this._weatherSettings.CityId + '&APPID='
             + this._weatherSettings.ApiKey + '&units=imperial';
     };
@@ -63,7 +63,11 @@ export class WeatherForecastComponent implements OnInit {
             .map((res: Response) => res.json())
             .subscribe(
                 data => {
-                    this.forecasts = this._weatherFunctions.interpretForecastData(data.list);
+                    if (data.list) {
+                      this.forecasts = this._weatherFunctions.interpretForecastData(data.list);
+                    } else {
+                      console.error(JSON.stringify(data));
+                    }
                 },
                 err => console.error(err)
             );
