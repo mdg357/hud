@@ -6,7 +6,6 @@ export class ForecastDto {
     this.dayText = dayText;
     this.icon = defaultText;
     this.weatherId = null;
-    this.valid = true;
 
     this.minimumTemperatures = new Array<number>();
     this.maximumTemperatures = new Array<number>();
@@ -17,7 +16,6 @@ export class ForecastDto {
   public dayText: string;
   public icon: string;
   public weatherId: number;
-  public valid: boolean;
 
   private minimumTemperatures: number[];
   private maximumTemperatures: number[];
@@ -66,5 +64,11 @@ export class ForecastDto {
     return this.maximumTemperatures.length > 0
       ? Math.round(Math.max(...this.maximumTemperatures))
       : null;
+  }
+
+  public get valid(): boolean {
+    return this.maximumTemperatures.length > 0
+      && this.minimumTemperatures.length > 0
+      && this.weatherTypes.length > 0;
   }
 }

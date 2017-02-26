@@ -1,10 +1,12 @@
 <div id="forecast" class="col-md-5">
-    <div *ngFor="let forecast of forecasts" class="row smallText">
-        <div class="col-md-2 col-md-offset-2">{{forecast.dayText}}</div>
-        <div class="col-md-2 imgHelper">
-            <img class="smallImg" [src]="forecast.icon" />
-        </div>
-        <div class="col-md-2 text-right">{{forecast.maximumTemperature}}</div>
-        <div class="col-md-2 text-right">{{forecast.minimumTemperature}}</div>
+  <div *ngFor="let forecast of forecasts" class="row smallText">
+    <div *ngIf="forecast.valid">
+      <div class="col-md-2 col-md-offset-2">{{forecast.dayText}}</div>
+      <div class="col-md-2 imgHelper">
+        <img class="smallImg" [src]="forecast.icon" />
+      </div>
+      <div class="col-md-2 text-right">{{forecast.maximumTemperature}}</div>
+      <div class="col-md-2 text-right">{{forecast.minimumTemperature}}</div>
     </div>
+  </div>
 </div>
