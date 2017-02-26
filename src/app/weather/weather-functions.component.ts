@@ -4,8 +4,8 @@ import * as moment from 'moment';
 
 @Injectable()
 export class WeatherFunctions {
-    private _defaultWeatherIconIdDay: number = 0;
-    private _defaultWeatherIconIdNight: number = 1;
+    private _defaultWeatherIconIdDay = 0;
+    private _defaultWeatherIconIdNight = 1;
     private _imagePath = 'assets/images/';
     private _weatherIconList = [
         { id: this._defaultWeatherIconIdDay, icon: '2.svg', description: 'default-day' },
@@ -168,9 +168,9 @@ export class WeatherFunctions {
                     entry.weatherTypes.push([weatherType, 1]);
                 } else { // Otherwise, see if the entry already exists in the array
                     let valueFound = false;
-                    entry.weatherTypes.forEach(function(element) {
-                        if (element[weatherTypeIndex] === weatherType) {
-                            element[weatherCountIndex] += 1;
+                    entry.weatherTypes.forEach((item) => {
+                        if (item[weatherTypeIndex] === weatherType) {
+                            item[weatherCountIndex] += 1;
                             valueFound = true;
                         }
                     });
@@ -183,30 +183,34 @@ export class WeatherFunctions {
             }
         });
 
-        // Once the forecast array is populate, go through it again to find the 
+        // Once the forecast array is populate, go through it again to find the
         // temperatures and the most prevalent weather condition
-        forecasts.forEach(function(element) {
+        forecasts.forEach((element) => {
             // Locate the minimum and maximum temperatures
             for (let i = 0; i < element.tempMinArr.length; ++i) {
-                if (element.tempMin === undefined || element.tempMinArr[i] < element.tempMin)
+                if (element.tempMin === undefined || element.tempMinArr[i] < element.tempMin) {
                     element.tempMin = element.tempMinArr[i];
+                }
             }
 
             for (let i = 0; i < element.tempMaxArr.length; ++i) {
-                if (element.tempMax === undefined || element.tempMaxArr[i] > element.tempMax)
+                if (element.tempMax === undefined || element.tempMaxArr[i] > element.tempMax) {
                     element.tempMax = element.tempMaxArr[i];
+                }
             }
 
             // Round the value if it exists
-            if (element.tempMin !== undefined)
+            if (element.tempMin !== undefined) {
                 element.tempMin = Math.round(element.tempMin);
-            else
+            } else {
                 element.tempMin = unknownText;
+            }
 
-            if (element.tempMax !== undefined)
+            if (element.tempMax !== undefined) {
                 element.tempMax = Math.round(element.tempMax);
-            else
+            } else {
                 element.tempMax = unknownText;
+            }
 
             let mostPrevalentCount = undefined;
             let mostPrevalentIndex = undefined;

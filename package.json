@@ -8,10 +8,12 @@
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "tsc": "tsc --noUnusedParameters --noUnusedLocals",
+    "tsc:w": "tsc -w --noUnusedParameters --noUnusedLocals"
   },
   "private": true,
-  "dependencies": {
+"dependencies": {
     "@angular/common": "^2.4.0",
     "@angular/compiler": "^2.4.0",
     "@angular/core": "^2.4.0",

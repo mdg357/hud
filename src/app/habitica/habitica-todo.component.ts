@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Http, Headers, Response } from '@angular/http';
 import { Observable } from 'rxjs/Rx';
 
@@ -10,15 +10,15 @@ import { SettingsService } from '../services/settings.service';
     templateUrl: './habitica-todo.component.html'
 })
 
-export class HabiticaTodoComponent {
+export class HabiticaTodoComponent implements OnInit {
     componentName: 'HabiticaTodoComponent';
 
     private _habiticaSettings: any = null;
-    private _habiticaTaskUrl: string = 'https://habitica.com/api/v3/tasks/user';
+    private _habiticaTaskUrl = 'https://habitica.com/api/v3/tasks/user';
     private _refreshInterval: number = 1000 * 60 * 30; // 30 minutes
-    private _maxTodoItemsPerColumn: number = 8;
-    private _maxTodoItems: number = 16;
-    private _habiticaTaskType: string = 'daily';
+    private _maxTodoItemsPerColumn = 8;
+    private _maxTodoItems = 16;
+    private _habiticaTaskType = 'daily';
     private _shortDateStrings: any = {
         sun: 'su', mon: 'm', tue: 't', wed: 'w', thu: 'th', fri: 'f', sat: 's'
     };

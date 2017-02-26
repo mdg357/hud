@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Http, Response } from '@angular/http';
 import { WeatherFunctions } from './weather-functions.component';
 import { Observable } from 'rxjs/Rx';
@@ -11,7 +11,7 @@ import { SettingsService } from '../services/settings.service';
     providers: [WeatherFunctions]
 })
 
-export class WeatherCurrentComponent {
+export class WeatherCurrentComponent implements OnInit {
     componentName: 'WeatherCurrentComponent';
 
     private _refreshInterval: number = 1000 * 60 * 30; // 30 minutes;
