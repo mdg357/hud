@@ -78,7 +78,7 @@ export class WeatherFunctions {
         }
 
         this._weatherIconList.forEach(
-            function(element) {
+            (element) => {
                 if (element.id === id) {
                     icon = imagePath + element.icon;
                     description = element.description;
@@ -157,9 +157,9 @@ export class WeatherFunctions {
             // If an index was found, populate the object
             if (index !== null) {
               let entry = forecasts[index];
-              entry.AddMinimumTemperatures(element.main.temp_min);
-              entry.AddMaximumTemperatures(element.main.temp_max);
-              entry.AddWeatherType(element.weather[0].id);
+              entry.addMinimumTemperatures(element.main.temp_min);
+              entry.addMaximumTemperatures(element.main.temp_max);
+              entry.addWeatherType(element.weather[0].id);
               entry.icon = this.getWeatherIcon(entry.weatherId, null, null);
             }
         });

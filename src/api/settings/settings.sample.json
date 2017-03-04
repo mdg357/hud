@@ -1,10 +1,17 @@
 {
     "habitica": {
-        "ApiKey": "",
-        "UserId": ""
+        "apiKey": "",
+        "userId": "",
+        "taskUrl": "https://habitica.com/api/v3/tasks/user",
+        "refreshInterval": 1800000
     },
     "weather": {
-        "ApiKey": "",
-        "CityId": ""
+        "apiKey": "",
+        "cityId": "5074472",
+        "currentRefreshInterval": 1800000,
+        "forecastRefreshInterval": 43200000,
+        "forecastUrl": "http://api.openweathermap.org/data/2.5/forecast",
+        "currentUrl": "http://api.openweathermap.org/data/2.5/weather",
+        "sunriseSunsetUrl": "http://api.sunrise-sunset.org/json"
     }
 }

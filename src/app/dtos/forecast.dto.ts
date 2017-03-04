@@ -21,7 +21,7 @@ export class ForecastDto {
   private maximumTemperatures: number[];
   private weatherTypes: WeatherTypeDto[];
 
-  public AddWeatherType(type: number) {
+  public addWeatherType(type: number) {
     let existingWeatherType = this.weatherTypes.filter((entry) => {
       return entry.type === type;
     });
@@ -32,10 +32,10 @@ export class ForecastDto {
       this.weatherTypes.push(new WeatherTypeDto(type));
     }
 
-    this.weatherId = this.GetMostPrevalentWeatherType();
+    this.weatherId = this.getMostPrevalentWeatherType();
   }
 
-  public GetMostPrevalentWeatherType(): number {
+  private getMostPrevalentWeatherType(): number {
     if (this.weatherTypes.length === 0) {
       return null;
     } else if (this.weatherTypes.length === 1) {
@@ -46,11 +46,11 @@ export class ForecastDto {
     }
   }
 
-  public AddMinimumTemperatures(temperature: number) {
+  public addMinimumTemperatures(temperature: number) {
     this.minimumTemperatures.push(temperature);
   }
 
-  public AddMaximumTemperatures(temperature: number) {
+  public addMaximumTemperatures(temperature: number) {
     this.maximumTemperatures.push(temperature);
   }
 

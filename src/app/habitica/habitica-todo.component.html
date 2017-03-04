@@ -1,9 +1,6 @@
-<div *ngFor="let item of items.list" class="row">
-    <div *ngIf="useTwoColumns()">
-        <div class="col-md-6 checklistItem">{{item[0]}}</div>
-        <div *ngIf="item.length == 2" class="col-md-6 checklistItem">{{item[1]}}</div>
-    </div>
-    <div *ngIf="!useTwoColumns()">
-        <div class="col-md-6 checklistItem">{{item}}</div>
+<div *ngFor="let item of todoList" class="row">
+    <div>
+        <div class="col-md-6 checklistItem">{{item[0].text}}</div>
+        <div *ngIf="item.length === 2" class="col-md-6 checklistItem">{{item[1].text}}</div>
     </div>
 </div>

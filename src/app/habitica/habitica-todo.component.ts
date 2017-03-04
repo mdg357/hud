@@ -3,7 +3,10 @@ import { Http, Headers, Response } from '@angular/http';
 import { Observable } from 'rxjs/Rx';
 
 import * as moment from 'moment';
+
 import { SettingsService } from '../services/settings.service';
+import { HabitDto } from '../dtos/habit.dto';
+import { HabiticaSettingsDto } from '../dtos/habiticaSettings.dto';
 
 @Component({
     selector: 'habitica-todo',
@@ -11,12 +14,11 @@ import { SettingsService } from '../services/settings.service';
 })
 
 export class HabiticaTodoComponent implements OnInit {
-    componentName: 'HabiticaTodoComponent';
+    constructor(private _http: Http,
+        private _settingsService: SettingsService) {
+    }
 
-    private _habiticaSettings: any = null;
-    private _habiticaTaskUrl = 'https://habitica.com/api/v3/tasks/user';
-    private _refreshInterval: number = 1000 * 60 * 30; // 30 minutes
-    private _maxTodoItemsPerColumn = 8;
+    private _habiticaSettings: HabiticaSettingsDto;
     private _maxTodoItems = 16;
     private _habiticaTaskType = 'daily';
     private _shortDateStrings: any = {
@@ -24,14 +26,7 @@ export class HabiticaTodoComponent implements OnInit {
     };
 
     public errorMessage: any = '';
-    public items: any = {
-        totalItems: 0,
-        list: []
-    };
-
-    constructor(private _http: Http,
-        private _settingsService: SettingsService) {
-    }
+    public todoList: any;
 
     ngOnInit() {
         if (!this._habiticaSettings) {
@@ -46,73 +41,62 @@ export class HabiticaTodoComponent implements OnInit {
                 error => this.errorMessage = error);
     }
 
-    private setupTimer (settings: string[]) {
+    private setupTimer (settings: HabiticaSettingsDto) {
         this._habiticaSettings = settings;
 
         // Update the tasks, then update it every 30 minutes thereafter
         this.getHabiticaTasks();
-        let timer = Observable.interval(this._refreshInterval);
+        let timer = Observable.interval(this._habiticaSettings.refreshInterval);
         timer.subscribe(data => this.getHabiticaTasks());
     }
 
     private getHabiticaTasks () {
         if (!this._habiticaSettings) {
-            console.log('Habitica API Key or User ID not set');
+            console.error('Habitica API Key or User ID not set');
             return false;
         }
 
         let headers = new Headers();
-        headers.append('x-api-user', this._habiticaSettings.UserId);
-        headers.append('x-api-key', this._habiticaSettings.ApiKey);
+        headers.append('x-api-user', this._habiticaSettings.userId);
+        headers.append('x-api-key', this._habiticaSettings.apiKey);
 
-        this._http.get(this._habiticaTaskUrl, { headers: headers })
+        this._http.get(this._habiticaSettings.taskUrl, { headers: headers })
             .map((res: Response) => res.json())
             .subscribe(
                 data => {
-                    this.items = this.interpretHabitData(data.data);
+                    this.todoList = this.interpretHabitData(data.data);
                 },
                 err => console.error(err)
             );
     };
 
-    private interpretHabitData(habitData) {
+    private interpretHabitData(habitData: any) {
         let day = moment().format('ddd').toLowerCase();
         let shortDay = this._shortDateStrings[day];
+        let todos = new Array<HabitDto>();
         let itemCount = 0;
-        let todoList = [];
-        let todos = [];
-        let self = this;
+        let list = [];
 
-        habitData.forEach(function(value, key) {
-            if (value.completed === false && value.type === self._habiticaTaskType && value.repeat[shortDay] === true) {
-                todos.push(value.text);
+        habitData.forEach((value) => {
+            if (value.completed === false && value.type === this._habiticaTaskType && value.repeat[shortDay] === true) {
+                todos.push(new HabitDto(value.id, value.text));
                 itemCount += 1;
 
-                if (itemCount >= self._maxTodoItems) {
+                // Only grab the first N items from the response
+                if (itemCount >= this._maxTodoItems) {
                     return false;
                 }
             }
         });
 
-        if (itemCount > self._maxTodoItemsPerColumn) {
-            for (let i = 0; i < todos.length; ) {
-                if (i + 1 < todos.length) {
-                    todoList.push([todos[i++], todos[i++]]);
-                } else {
-                    todoList.push([todos[i++]]);
-                }
+        for (let i = 0; i < todos.length; ) {
+            if (i + 1 < todos.length) {
+                list.push([todos[i++], todos[i++]]);
+            } else {
+                list.push([todos[i++]]);
             }
-        } else {
-            todoList = todos;
         }
 
-        return {
-            totalItems: itemCount,
-            list: todoList
-        };
-    };
-
-    public useTwoColumns() {
-        return (this.items.totalItems > this._maxTodoItemsPerColumn);
+        return list;
     };
 }

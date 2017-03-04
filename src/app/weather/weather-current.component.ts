@@ -4,6 +4,7 @@ import { WeatherFunctions } from './weather-functions.component';
 import { Observable } from 'rxjs/Rx';
 
 import { SettingsService } from '../services/settings.service';
+import { WeatherSettingsDto } from '../dtos/weatherSettings.dto';
 
 @Component({
     selector: 'weather-current',
@@ -12,10 +13,13 @@ import { SettingsService } from '../services/settings.service';
 })
 
 export class WeatherCurrentComponent implements OnInit {
-    componentName: 'WeatherCurrentComponent';
+    constructor(private _http: Http,
+        private _weatherFunctions: WeatherFunctions,
+        private _settingsService: SettingsService) {
+        this.icon = this._weatherFunctions.getWeatherIcon(null, null, null);
+    }
 
-    private _refreshInterval: number = 1000 * 60 * 30; // 30 minutes;
-    private _weatherSettings: any = null;
+    private _weatherSettings: WeatherSettingsDto;
 
     public sunriseTime: string = null;
     public sunsetTime: string = null;
@@ -25,12 +29,6 @@ export class WeatherCurrentComponent implements OnInit {
     public temperature: number = null;
     public icon: string = null;
     public errorMessage: any = null;
-
-    constructor(private _http: Http,
-        private _weatherFunctions: WeatherFunctions,
-        private _settingsService: SettingsService) {
-        this.icon = this._weatherFunctions.getWeatherIcon(null, null, null);
-    }
 
     ngOnInit() {
         if (!this._weatherSettings) {
@@ -45,33 +43,32 @@ export class WeatherCurrentComponent implements OnInit {
                 error => this.errorMessage = <any>error);
     }
 
-    private setupTimer (settings: string[]) {
+    private setupTimer (settings: WeatherSettingsDto) {
         this._weatherSettings = settings;
 
         // Update the current weather, then update it every 30 minutes thereafter
         this.getCurrentWeather();
-        let timer = Observable.interval(this._refreshInterval);
+        let timer = Observable.interval(this._weatherSettings.forecastRefreshInterval);
         timer.subscribe(this.getCurrentWeather);
     }
 
-    private getCurrentWeatherUrl() {
-        return 'http://api.openweathermap.org/data/2.5/weather?id='
-            + this._weatherSettings.CityId + '&APPID='
-            + this._weatherSettings.ApiKey + '&units=imperial';
+    public buildCurrentWeatherUrl(): string {
+        return this._weatherSettings.currentUrl + '?id='
+            + this._weatherSettings.cityId + '&APPID='
+            + this._weatherSettings.apiKey + '&units=imperial';
     };
 
-    private getSunriseSunsetUrl(latitude, longitude) {
-        return 'http://api.sunrise-sunset.org/json?lat='
-            + latitude + '&lng=' + longitude + '&date=today';
+    public buildSunriseSunsetUrl(latitude: string, longitude: string): string {
+        return this._weatherSettings.sunriseSunsetUrl + '?lat=' + latitude + '&lng=' + longitude + '&date=today';
     };
 
     private getCurrentWeather() {
         if (!this._weatherSettings) {
-            console.log('Weather API Key or City ID not set');
+            console.error('Weather API Key or City ID not set');
             return false;
         }
 
-        this._http.get(this.getCurrentWeatherUrl())
+        this._http.get(this.buildCurrentWeatherUrl())
             .map((res: Response) => res.json())
             .subscribe(
                 data => {
@@ -85,7 +82,7 @@ export class WeatherCurrentComponent implements OnInit {
             );
 
         if (this.sunriseTime === null || this.sunsetTime === null) {
-            this._http.get(this.getSunriseSunsetUrl(this.latitude, this.longitude))
+            this._http.get(this.buildSunriseSunsetUrl(this.latitude, this.longitude))
                 .map((res: Response) => res.json())
                 .subscribe(
                     data => {

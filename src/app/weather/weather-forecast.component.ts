@@ -4,6 +4,7 @@ import { WeatherFunctions } from './weather-functions.component';
 import { Observable } from 'rxjs/Rx';
 
 import { SettingsService } from '../services/settings.service';
+import { WeatherSettingsDto } from '../dtos/weatherSettings.dto';
 
 @Component({
     selector: 'weather-forecast',
@@ -12,18 +13,15 @@ import { SettingsService } from '../services/settings.service';
 })
 
 export class WeatherForecastComponent implements OnInit {
-    componentName: 'WeatherForecastComponent';
-
-    private _refreshInterval: number = 1000 * 60 * 60 * 12; // 12 hours
-    private _weatherSettings: any = null;
-
-    public forecasts: any;
-    public errorMessage: any = null;
-
     constructor(private _http: Http,
         private _weatherFunctions: WeatherFunctions,
         private _settingsService: SettingsService) {
     }
+
+    private _weatherSettings: WeatherSettingsDto;
+
+    public forecasts: any;
+    public errorMessage: any;
 
     ngOnInit() {
         if (!this._weatherSettings) {
@@ -38,35 +36,35 @@ export class WeatherForecastComponent implements OnInit {
                 error => this.errorMessage = <any>error);
     }
 
-    private setupTimer (settings: string[]) {
+    private setupTimer (settings: WeatherSettingsDto) {
         this._weatherSettings = settings;
 
         // Update the weather forecast, then update it every 12 hours thereafter
         this.getForecastWeather();
-        let timer = Observable.interval(this._refreshInterval);
+        let timer = Observable.interval(this._weatherSettings.forecastRefreshInterval);
         timer.subscribe(data => this.getForecastWeather());
     }
 
-    private getForecastWeatherUrl(): string {
-        return 'http://api.openweathermap.org/data/2.5/forecast?id='
-            + this._weatherSettings.CityId + '&APPID='
-            + this._weatherSettings.ApiKey + '&units=imperial';
+    public buildForecastWeatherUrl(): string {
+        return this._weatherSettings.forecastUrl + '?id='
+            + this._weatherSettings.cityId + '&APPID='
+            + this._weatherSettings.apiKey + '&units=imperial';
     };
 
     private getForecastWeather() {
         if (!this._weatherSettings) {
-            console.log('Weather API Key or City ID not set');
+            console.error('Weather API Key or City ID not set');
             return false;
         }
 
-        this._http.get(this.getForecastWeatherUrl())
+        this._http.get(this.buildForecastWeatherUrl())
             .map((res: Response) => res.json())
             .subscribe(
                 data => {
                     if (data.list) {
-                      this.forecasts = this._weatherFunctions.interpretForecastData(data.list);
+                        this.forecasts = this._weatherFunctions.interpretForecastData(data.list);
                     } else {
-                      console.error(JSON.stringify(data));
+                        console.error(JSON.stringify(data));
                     }
                 },
                 err => console.error(err)

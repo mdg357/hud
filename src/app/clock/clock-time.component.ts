@@ -8,7 +8,11 @@ import * as moment from 'moment';
 })
 
 export class ClockTimeComponent {
-    componentName: 'ClockTimeComponent';
+    constructor() {
+        // Update the time, then update it every 1 second thereafter
+        this._timer = Observable.timer(0, this._refreshInterval);
+        this._timer.subscribe(data => this.updateTime());
+    }
 
     private _refreshInterval = 1000;
     private _hoursAndMinutesFormat = 'hh:mm';
@@ -17,12 +21,6 @@ export class ClockTimeComponent {
 
     public hoursAndMinutes: string;
     public seconds: string;
-
-    constructor() {
-        // Update the time, then update it every 1 second thereafter
-        this._timer = Observable.timer(0, this._refreshInterval);
-        this._timer.subscribe(data => this.updateTime());
-    }
 
     private updateTime() {
         this.hoursAndMinutes = moment().format(this._hoursAndMinutesFormat);
