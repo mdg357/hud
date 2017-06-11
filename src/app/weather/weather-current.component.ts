@@ -48,7 +48,7 @@ export class WeatherCurrentComponent implements OnInit {
 
         // Update the current weather, then update it every 30 minutes thereafter
         this.getCurrentWeather();
-        let timer = Observable.interval(this._weatherSettings.forecastRefreshInterval);
+        let timer = Observable.interval(this._weatherSettings.currentRefreshInterval);
         timer.subscribe(this.getCurrentWeather);
     }
 
