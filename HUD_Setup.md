@@ -29,7 +29,7 @@ setxkbmap -option terminate:ctrl_alt_bksp
 # Start Chromium in kiosk mode
 sed -i 's/"exited_cleanly":false/"exited_cleanly":true/' ~/.config/chromium/'Local State'
 sed -i 's/"exited_cleanly":false/"exited_cleanly":true/; s/"exit_type":"[^"]\+"/"exit_type":"Normal"/' ~/.config/chromium/Default/Preferences
-chromium-browser --disable-infobars --kiosk 'localhost'
+chromium-browser --disable-infobars --kiosk --disable-component-update 'localhost'
 ```
 
 6. Edit .profile and append the following line:
@@ -42,3 +42,6 @@ chromium-browser --disable-infobars --kiosk 'localhost'
 	Edit /etc/nginx/sites-enabled/default
 	
 	Change the root line to read: `root /home/pi/hud`
+    
+9. Run this line to disable the Chromium update check
+   `sudo touch /etc/chromium-browser/customizations/01-disable-update-check;echo CHROMIUM_FLAGS=\"\$\{CHROMIUM_FLAGS\} --check-for-update-interval=31536000\" | sudo tee /etc/chromium-browser/customizations/01-disable-update-check`
